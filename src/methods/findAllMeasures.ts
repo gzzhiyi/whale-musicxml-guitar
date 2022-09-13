@@ -11,7 +11,22 @@ function isTAB(measureXML) {
     measureXML = measureXML[0]
   }
 
-  return measureXML.attributes.clef.sign === 'TAB'
+  const clef: any = measureXML?.attributes?.clef
+
+  let res = false
+
+  if (isArray(clef)) {
+    clef.map((item) => {
+      if (item?.sign === 'TAB') {
+        res = true
+      }
+    })
+  } else if (isObject(clef)) {
+    const c: any = clef
+    res = c.sign === 'TAB'
+  }
+
+  return res
 }
 
 function getMeasure(measureXML, partId) {
@@ -19,7 +34,9 @@ function getMeasure(measureXML, partId) {
     const arr: any = []
 
     measureXML.map((item: any) => {
-      const o = { partId }
+      const o = {
+        partId
+      }
 
       if (isObject(item)) {
         arr.push({ ...o, ...item })

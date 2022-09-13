@@ -1,9 +1,41 @@
-import { isEmpty } from 'lodash'
+import {
+  isArray,
+  isEmpty,
+  isObject
+} from 'lodash'
 
-export default function getClef(measures: any) {
+function findTab(clef) {
   let config = {}
 
-  measures.map((item: any) => {
+  if (isArray(clef)) {
+    clef.map((o) => {
+      if (o?.sign !== 'TAB') {
+        return
+      }
+
+      const { line, sign, _number } = o
+      config = {
+        line,
+        sign,
+        number: _number
+      }
+    })
+  } else if (isObject(clef)) {
+    const o: any = clef
+    const { line, sign } = o
+    config = {
+      line,
+      sign
+    }
+  }
+
+  return config
+}
+
+export default function getClef(measureXML: any, type: string = 'TAB') {
+  let config = {}
+
+  measureXML.map((item: any) => {
     const { attributes } = item
 
     if (!attributes) {
@@ -13,12 +45,12 @@ export default function getClef(measures: any) {
     const { clef } = attributes
 
     if (isEmpty(clef)) {
-      return;
+      return
     }
 
-    const { line, sign } = clef
-
-    config = { line, sign }
+    if (type === 'TAB') {
+      config = findTab(clef)
+    }
   })
 
   return config

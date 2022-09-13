@@ -71,7 +71,7 @@ export class MxmlQuery {
     this.tuningStep = getTuningStep(this._oriMeasures)
     this.harmonies = getHarmonies(this._oriHarmonies)
 
-    const { measureList, noteList, timeline } = parseData(this._oriMeasures)
+    const { measureList, noteList, timeline } = parseData(this._oriMeasures, this.clef)
     this.measures = measureList
     this.notes = noteList
     this.timeline = timeline

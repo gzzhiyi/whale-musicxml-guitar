@@ -12,16 +12,16 @@ export default function App() {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded'
         }
-      });
+      })
 
       return res.data
     } catch (err) {
-      console.error(err);
+      console.error(err)
     }
   }
 
   useEffect(async() => {
-    const xmlDoc = await getXMLData('/xml/011.xml')
+    const xmlDoc = await getXMLData('/xml/020.xml')
     new MxmlQuery(xmlDoc, { debug: true })
   }, [])
 

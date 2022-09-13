@@ -34,8 +34,6 @@ function getName(root, kind) {
 export default function getHarmonies(harmonyXML) {
   const arr: any = []
 
-  console.log(harmonyXML)
-
   harmonyXML.map((item) => {
     const { root, kind, frame } = item
 

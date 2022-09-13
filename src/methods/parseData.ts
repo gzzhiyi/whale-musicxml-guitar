@@ -1,26 +1,35 @@
 import {
   isArray,
   isEmpty,
-  times,
   has,
-  find
+  find,
+  filter
 } from 'lodash'
-import numberToNoteType from './numberToNoteType'
 import noteTypeToNumber from './noteTypeToNumber'
 import getBpm from './getBpm'
 import getBeats from './getBeats'
 import getBeatType from './getBeatType'
 import getTimeRange from './getTimeRange'
 
+
 /**
- * 休止符判断
+ * 是否TAB音符
+ */
+function isTabNote(noteXML) {
+  const { notations } = noteXML
+
+  return !isEmpty(notations) && !isEmpty(notations.technical)
+}
+
+/**
+ * 是否休止符
  */
 function isRest(noteXML) {
   return has(noteXML, 'rest')
 }
 
 /**
- * 和弦判断
+ * 是否和弦音符
  */
 function isChord(noteXML) {
   return has(noteXML, 'chord')
@@ -51,11 +60,11 @@ function hasDot(noteXML) {
 /**
  * 创建空白节点
  */
-function createBlankNode(id, measureId, type) {
+function createBlankNode(id, measureId) {
   return {
     id,
     measureId,
-    type,
+    type: 'whole',
     view: 'blank',
     data: null
   }
@@ -82,7 +91,7 @@ function createRestNode(id, measureId, noteXML) {
  */
 function createSingleNode(id, measureId, noteXML) {
   const { type, notations, pitch } = noteXML
-  const { fret, string } = notations.technical
+  const { fret, string } = notations.technical || {}
   const { step, octave, alter } = pitch
 
   return {
@@ -206,7 +215,7 @@ function createTimeline(measures, notes) {
 /**
  * 解析数据
  */
-export default function parseData(measureXML: []) {
+export default function parseData(measureXML: any = [], clef: any = {}) {
   const mList: any = []
   const nList: any = []
 
@@ -237,14 +246,11 @@ export default function parseData(measureXML: []) {
     })
 
     if (isEmpty(note)) { // 空节点处理
-      const amount = times(beats)
-      amount.map(() => {
-        const id: string = `N_${nodeCount}`
-        const node: any = createBlankNode(id, measureId, numberToNoteType(beatType))
+      const id: string = `N_${nodeCount}`
+      const node: any = createBlankNode(id, measureId)
 
-        nList.push(node)
-        nodeCount++
-      })
+      nList.push(node)
+      nodeCount++
       return
     }
 
@@ -256,9 +262,13 @@ export default function parseData(measureXML: []) {
       notes = note
     }
 
-    let slurTotal = 0; // 需合并数量
-    let slurMerged = 0; // 已合并数量
-    let slurType = ''; // 连音类型
+    if (clef.number) { // 如果元数据存在多种曲谱类型，则根据当前类型做筛选处理
+      notes = filter(notes, { staff: Number(clef.number) })
+    }
+
+    let slurTotal = 0 // 需合并数量
+    let slurMerged = 0 // 已合并数量
+    let slurType = '' // 连音类型
 
     notes.map((subItem) => {
       const id: string = `N_${nodeCount}`
@@ -276,7 +286,7 @@ export default function parseData(measureXML: []) {
         return
       } else if (isRest(subItem)) { // 休止符
         node = createRestNode(id, measureId, subItem)
-      } else { // 单音符
+      } else if (isTabNote(subItem)) { // 单音符
         node = createSingleNode(id, measureId, subItem)
       }
 
@@ -299,6 +309,10 @@ export default function parseData(measureXML: []) {
           ...node,
           ...props
         }
+      }
+
+      if (isEmpty(node)) {
+        return
       }
 
       nList.push(node)

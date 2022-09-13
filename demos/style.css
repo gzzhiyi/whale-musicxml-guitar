@@ -1,0 +1,14 @@
+h1 {
+  font-size: 24px;
+}
+
+section {
+  padding: 10px 0;
+}
+
+section button {
+  height: 44px;
+  margin-right: 10px;
+  padding: 0 20px;
+  font-size: 14px;
+}

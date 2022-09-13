@@ -1,2 +1,1 @@
-# simple-musicxml-guitar
-Simple MusicXML Guitar
+# Simple MusicXML Guitar

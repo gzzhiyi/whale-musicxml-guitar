@@ -1,10 +1,12 @@
 {
   "name": "simple-musicxml-guitar",
   "version": "0.1.0",
-  "author": "Stanley He",
+  "author": "gzzhiyi@126.com",
   "license": "MIT",
   "description": "Simple MusicXML for guitar.",
-  "keywords": [],
+  "keywords": [
+    "MusicXML"
+  ],
   "private": false,
   "scripts": {
     "dev": "rollup -c ./build/rollup.dev.config.js -w",

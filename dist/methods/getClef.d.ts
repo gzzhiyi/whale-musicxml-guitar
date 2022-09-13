@@ -1,1 +1,1 @@
-export default function getClef(measures: any): {};
+export default function getClef(measureXML: any, type?: string): {};

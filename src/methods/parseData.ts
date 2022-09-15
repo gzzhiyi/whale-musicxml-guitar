@@ -11,7 +11,6 @@ import getBeats from './getBeats'
 import getBeatType from './getBeatType'
 import getTimeRange from './getTimeRange'
 
-
 /**
  * 是否TAB音符
  */
@@ -100,8 +99,8 @@ function createSingleNode(id, measureId, noteXML) {
     type,
     view: 'single',
     data: {
-      fret,
       string: string - 1, // MusicXML的string是从1开始
+      fret,
       step: alter ? `${step}#` : step,
       octave
     },
@@ -118,8 +117,8 @@ function createChordNode(noteXML, lastNode) {
   const { step, octave, alter } = pitch
 
   const nodeData = {
-    fret,
     string: string - 1, // MusicXML的string是从1开始
+    fret,
     step: alter ? `${step}#` : step,
     octave
   }

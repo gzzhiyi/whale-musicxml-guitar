@@ -1,3 +1,6 @@
+import { uniqBy } from 'lodash'
+import formatNotes from './formatNotes'
+
 /**
  * 获取和弦名称
  */
@@ -40,10 +43,9 @@ export default function getHarmonies(harmonyXML) {
     arr.push({
       name: getName(root, kind),
       firstFret: frame['first-fret'] || 1,
-      data: frame['frame-note'] || []
+      data: formatNotes(frame['frame-note'])
     })
   })
 
-
-  return arr
+  return uniqBy(arr, 'name')
 }

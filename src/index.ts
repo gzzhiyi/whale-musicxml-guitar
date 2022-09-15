@@ -2,7 +2,7 @@ import {
   XMLValidator,
   XMLParser
 } from 'fast-xml-parser'
-// import { noteTimeTypes } from './types'
+import findChordName from './methods/findChordName'
 import findAllParts from './methods/findAllParts'
 import findAllMeasures from './methods/findAllMeasures'
 import findAllHarmonies from './methods/findAllHarmonies'
@@ -75,6 +75,8 @@ export class MxmlQuery {
     this.measures = measureList
     this.notes = noteList
     this.timeline = timeline
+
+    findChordName(this.notes, this.harmonies)
 
     // Logs
     this._debug && console.log(this)

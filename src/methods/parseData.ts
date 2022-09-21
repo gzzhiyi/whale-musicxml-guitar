@@ -214,7 +214,7 @@ function createTimeline(measures, notes) {
 /**
  * 解析数据
  */
-export default function parseData(measureXML: any = [], clef: any = {}, bpm: number = 0) {
+export default function parseData(measureXML: any = [], clef: any = {}, bpm: number = 0, speed: number = 1) {
   const mList: any = []
   const nList: any = []
 
@@ -229,7 +229,9 @@ export default function parseData(measureXML: any = [], clef: any = {}, bpm: num
 
     const { _number, note, partId } = measure
 
-    bpm = bpm || getBpm(measure) || 60
+    let mBpm = bpm || getBpm(measure) || 60
+    mBpm = Math.round(mBpm * speed)
+
     beats = getBeats(measure) || beats
     beatType = getBeatType(measure) || beatType
 
@@ -238,7 +240,7 @@ export default function parseData(measureXML: any = [], clef: any = {}, bpm: num
     mList.push({
       id: measureId,
       partId,
-      bpm,
+      bpm: mBpm,
       beats,
       beatType
     })

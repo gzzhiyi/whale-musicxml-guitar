@@ -1,11 +1,13 @@
 {
   "name": "simple-musicxml-guitar",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "author": "gzzhiyi@gmail.com",
   "license": "MIT",
   "description": "Simple MusicXML for guitar.",
   "keywords": [
-    "MusicXML"
+    "MusicXML",
+    "Guitar",
+    "Music"
   ],
   "scripts": {
     "dev": "rollup -c ./build/rollup.dev.config.js -w",

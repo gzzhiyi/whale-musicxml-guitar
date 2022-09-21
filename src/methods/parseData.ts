@@ -158,7 +158,7 @@ function appendSlurProps(noteXML, slurType) {
  */
 function calNoteDuration(node, beatType, bpm) {
   const { type, slur, dot } = node
-  let duration = 60 / ((noteTypeToNumber(type) / beatType) * bpm) * 1000
+  let duration = Math.floor(60 / ((noteTypeToNumber(type) / beatType) * bpm) * 1000)
 
   if (!isEmpty(slur)) { // 连音
     const { actualNotes, normalNotes, type } = slur

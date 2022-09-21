@@ -22,7 +22,7 @@ export default function App() {
 
   useEffect(async() => {
     const xmlDoc = await getXMLData('/xml/011.xml')
-    new MxmlQuery(xmlDoc, { debug: true })
+    new MxmlQuery(xmlDoc, { debug: true, bpm: 60 })
   }, [])
 
   return (

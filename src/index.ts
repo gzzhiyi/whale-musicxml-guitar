@@ -27,10 +27,12 @@ function xmlToJson(mXML: string, preserveOrder = false) {
 
 type OptionProps = {
   debug: boolean
+  bpm: number
 }
 
 export class MxmlQuery {
   public _debug: any
+  public _bpm: any
   public _oriXml: any
   public _oriParts: any
   public _oriMeasures: any
@@ -55,6 +57,7 @@ export class MxmlQuery {
 
     // Options
     this._debug = option?.debug
+    this._bpm = option?.bpm
 
     // Origin
     this._oriXml = xmlToJson(xml) || {}
@@ -71,7 +74,7 @@ export class MxmlQuery {
     this.tuningStep = getTuningStep(this._oriMeasures)
     this.harmonies = getHarmonies(this._oriHarmonies)
 
-    const { measureList, noteList, timeline } = parseData(this._oriMeasures, this.clef)
+    const { measureList, noteList, timeline } = parseData(this._oriMeasures, this.clef, this._bpm)
     this.measures = measureList
     this.notes = noteList
     this.timeline = timeline

@@ -1,8 +1,10 @@
 declare type OptionProps = {
     debug: boolean;
+    bpm: number;
 };
 export declare class MxmlQuery {
     _debug: any;
+    _bpm: any;
     _oriXml: any;
     _oriParts: any;
     _oriMeasures: any;

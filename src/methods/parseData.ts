@@ -221,6 +221,7 @@ export default function parseData(measureXML: any = [], clef: any = {}, bpm: num
   let nodeCount = 1
   let beats = 4
   let beatType = 4
+  let globalBPM = 60
 
   measureXML.map((measure: any) => {
     if (isEmpty(measure)) {
@@ -229,7 +230,8 @@ export default function parseData(measureXML: any = [], clef: any = {}, bpm: num
 
     const { _number, note, partId } = measure
 
-    let mBpm = bpm || getBpm(measure) || 60
+    globalBPM = getBpm(measure) || globalBPM
+    let mBpm = bpm || globalBPM
     mBpm = Math.round(mBpm * speed)
 
     beats = getBeats(measure) || beats

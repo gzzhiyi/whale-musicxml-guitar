@@ -22,7 +22,7 @@ export default function findChordName(notes: any = [], harmonies: any = []) {
   notes.map((note) => {
     if (note.view === 'chord') {
       const o = find(harmonies, { 'data': formatNoteData(note.data) })
-      note.name = o.name
+      note.name = o?.name || ''
     }
   })
 

@@ -5,7 +5,6 @@ import formatNotes from './formatNotes'
  * 获取和弦名称
  */
 function getName(root, kind) {
-  console.log(root);
   const abbrs = {
     major: 'M',
     minor: 'm',

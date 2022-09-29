@@ -156,9 +156,9 @@ function appendSlurProps(noteXML, slurType) {
 /**
  * 计算音符时长
  */
-function calNoteDuration(node, beatType, bpm) {
+function calNoteDuration(node, bpm) {
   const { type, slur, dot } = node
-  let duration = Math.floor(60 / ((noteTypeToNumber(type) / beatType) * bpm) * 1000)
+  let duration = Math.floor(60 / bpm * (4 / noteTypeToNumber(type)) * 1000)
 
   if (!isEmpty(slur)) { // 连音
     const { actualNotes, normalNotes, type } = slur
@@ -191,8 +191,8 @@ function createTimeline(measures, notes) {
 
   notes.map((note) => {
     const measure = find(measures, { id: note.measureId })
-    const { beatType, bpm } = measure // 支持动态切换bpm
-    const duration = calNoteDuration(note, beatType, bpm)
+    const { bpm } = measure // 支持动态切换bpm
+    const duration = calNoteDuration(note, bpm)
     const startTime = timeAddUp
     const endTime = timeAddUp + duration
 

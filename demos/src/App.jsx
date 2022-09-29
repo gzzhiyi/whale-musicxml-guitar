@@ -21,7 +21,7 @@ export default function App() {
   }
 
   useEffect(async() => {
-    const xmlDoc = await getXMLData('/xml/Song6-100speed.xml')
+    const xmlDoc = await getXMLData('/xml/Lesson6-Branch4.xml')
     new MxmlQuery(xmlDoc, { debug: true })
   }, [])
 

@@ -5,22 +5,24 @@ import formatNotes from './formatNotes'
  * 获取和弦名称
  */
 function getName(root, kind) {
+  console.log(root);
   const abbrs = {
     major: 'M',
     minor: 'm',
     augmented: 'aug',
     diminished: 'dim',
+    dominant: '7',
     'suspended-second': 'sus2',
     'suspended-fourth': 'sus4',
     'major-sixth': '6',
-    'minor-sixth': 'm6',
-    dominant: '7',
     'major-seventh': 'maj7',
-    other: 'maj7(#5)',
+    'major-ninth': 'maj9',
+    'minor-sixth': 'm6',
     'minor-seventh': 'm7',
     'major-minor': 'm(maj7)',
     // { 'other': 'ø' },
     'diminished-seventh': 'dim7',
+    other: 'maj7(#5)',
     // { 'suspended-second': '7sus2' },
     // { 'suspended-fourth': '7sus4' },
     // { 'suspended-second': 'maj7sus2' },
@@ -28,7 +30,7 @@ function getName(root, kind) {
     power: '5'
   }
 
-  return `${root?.['root-step'] || ''}${root?.['root-alter'] === 1 ? '#' : ''}${abbrs[kind]}` || '';
+  return `${root?.['root-step'] || ''}${root?.['root-alter'] === 1 ? '#' : ''}${abbrs[kind] || ''}` || '';
 }
 
 /**

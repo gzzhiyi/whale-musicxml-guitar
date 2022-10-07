@@ -197,7 +197,7 @@ function createTimeline(measures, notes) {
     const endTime = timeAddUp + duration
 
     timeline.push({
-      nodeId: note.id,
+      noteId: note.id,
       duration,
       startTime,
       startTimeRange: getTimeRange(startTime),

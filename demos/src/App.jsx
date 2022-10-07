@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import axios from 'axios'
-import { MxmlQuery } from '../dist/index.esm.js'
+import { MxmlQuery, noteTypeToNumber, numberToNoteType } from '../dist/index.esm.js'
 
 export default function App() {
   async function getXMLData(xmlUrl) {
@@ -23,6 +23,9 @@ export default function App() {
   useEffect(async() => {
     const xmlDoc = await getXMLData('/xml/EP31.xml')
     new MxmlQuery(xmlDoc, { debug: true })
+
+    console.log(noteTypeToNumber('half'))
+    console.log(numberToNoteType(4))
   }, [])
 
   return (

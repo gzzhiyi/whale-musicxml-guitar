@@ -34,9 +34,7 @@ function getMeasure(measureXML, partId) {
     const arr: any = []
 
     measureXML.map((item: any) => {
-      const o = {
-        partId
-      }
+      const o = { partId }
 
       if (isObject(item)) {
         arr.push({ ...o, ...item })

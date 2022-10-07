@@ -15,6 +15,8 @@ import getScoreDuration from './methods/getScoreDuration'
 import getMeasureDuration from './methods/getMeasureDuration'
 import getNoteDuration from './methods/getNoteDuration'
 import parseData from './methods/parseData'
+import noteTypeToNumberFn from './methods/noteTypeToNumber'
+import numberToNoteTypeFn from './methods/numberToNoteType'
 
 function xmlToJson(mXML: string, preserveOrder = false) {
   const parser = new XMLParser({
@@ -102,4 +104,5 @@ export class MxmlQuery {
   }
 }
 
-export default {}
+export const noteTypeToNumber = noteTypeToNumberFn
+export const numberToNoteType = numberToNoteTypeFn

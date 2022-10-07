@@ -1,3 +1,5 @@
+import noteTypeToNumberFn from './methods/noteTypeToNumber';
+import numberToNoteTypeFn from './methods/numberToNoteType';
 declare type OptionProps = {
     debug: boolean;
     bpm: number;
@@ -26,5 +28,6 @@ export declare class MxmlQuery {
     getMeasureDuration(measureId: any): number;
     getNoteDuration(nodeId: any): any;
 }
-declare const _default: {};
-export default _default;
+export declare const noteTypeToNumber: typeof noteTypeToNumberFn;
+export declare const numberToNoteType: typeof numberToNoteTypeFn;
+export {};

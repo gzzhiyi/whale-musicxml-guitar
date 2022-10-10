@@ -61,7 +61,7 @@
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
-  "homepage": "https://www.hezhiyi.com",
+  "homepage": "https://www.hezhiyi.com/guppy/docs/simple-musicxml/guitar/",
   "browserslist": {
     "production": [
       ">0.2%",

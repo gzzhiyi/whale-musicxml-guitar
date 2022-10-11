@@ -9,7 +9,7 @@ import noteTypeToNumber from './noteTypeToNumber'
 import getBpm from './getBpm'
 import getBeats from './getBeats'
 import getBeatType from './getBeatType'
-import getTimeRange from './getTimeRange'
+import getCapo from './getCapo'
 
 /**
  * 是否TAB音符
@@ -32,6 +32,13 @@ function isRest(noteXML) {
  */
 function isChord(noteXML) {
   return has(noteXML, 'chord')
+}
+
+/**
+ * 延音线判断
+ */
+function hasTie(noteXML) {
+  return has(noteXML, 'tie')
 }
 
 /**
@@ -154,11 +161,28 @@ function appendSlurProps(noteXML, slurType) {
 }
 
 /**
+ * 添加延音线属性
+ */
+function appendTieProps(noteXML) {
+  const { notations } = noteXML
+  const { _type } = notations.tied
+
+  return {
+    tie: {
+      type: _type
+    }
+  }
+}
+
+/**
  * 计算音符时长
  */
-function calNoteDuration(node, bpm) {
+function calNoteDuration(node, bpm, bpmUnit) {
   const { type, slur, dot } = node
-  let duration = Math.floor(60 / bpm * (4 / noteTypeToNumber(type)) * 1000)
+
+  bpmUnit = noteTypeToNumber(bpmUnit) // 自定义BPM单位
+
+  let duration = Math.floor(60 / bpm * (bpmUnit / noteTypeToNumber(type)) * 1000)
 
   if (!isEmpty(slur)) { // 连音
     const { actualNotes, normalNotes, type } = slur
@@ -185,14 +209,14 @@ function calNoteDuration(node, bpm) {
 /**
  * 创建时间轴
  */
-function createTimeline(measures, notes) {
+function createTimeline(measures, notes, bpmUnit) {
   const timeline: any = []
   let timeAddUp = 0
 
   notes.map((note) => {
     const measure = find(measures, { id: note.measureId })
     const { bpm } = measure // 支持动态切换bpm
-    const duration = calNoteDuration(note, bpm)
+    const duration = calNoteDuration(note, bpm, bpmUnit)
     const startTime = timeAddUp
     const endTime = timeAddUp + duration
 
@@ -200,9 +224,7 @@ function createTimeline(measures, notes) {
       noteId: note.id,
       duration,
       startTime,
-      startTimeRange: getTimeRange(startTime),
-      endTime,
-      endTimeRange: getTimeRange(endTime)
+      endTime
     })
 
     timeAddUp = endTime
@@ -214,7 +236,13 @@ function createTimeline(measures, notes) {
 /**
  * 解析数据
  */
-export default function parseData(measureXML: any = [], clef: any = {}, bpm: number = 0, speed: number = 1) {
+export default function parseData(
+  measureXML: any = [],
+  clef: any = {},
+  bpm: number = 0,
+  bpmUnit: string = 'quarter',
+  speed: number = 1
+) {
   const mList: any = []
   const nList: any = []
 
@@ -237,6 +265,8 @@ export default function parseData(measureXML: any = [], clef: any = {}, bpm: num
     beats = getBeats(measure) || beats
     beatType = getBeatType(measure) || beatType
 
+    let capo = getCapo(measure) || 0
+
     // 添加小节
     const measureId: string = `M_${_number}`
     mList.push({
@@ -244,7 +274,8 @@ export default function parseData(measureXML: any = [], clef: any = {}, bpm: num
       partId,
       bpm: mBpm,
       beats,
-      beatType
+      beatType,
+      capo
     })
 
     if (isEmpty(note)) { // 空节点处理
@@ -292,6 +323,14 @@ export default function parseData(measureXML: any = [], clef: any = {}, bpm: num
         node = createSingleNode(id, measureId, subItem)
       }
 
+      if (hasTie(subItem)) { // 延音线
+        const props = appendTieProps(subItem)
+        node = {
+          ...node,
+          ...props
+        }
+      }
+
       if (hasSlur(subItem)) { // 连音
         slurTotal = subItem['time-modification']['actual-notes']
         slurMerged++
@@ -325,6 +364,6 @@ export default function parseData(measureXML: any = [], clef: any = {}, bpm: num
   return {
     measureList: mList,
     noteList: nList,
-    timeline: createTimeline(mList, nList)
+    timeline: createTimeline(mList, nList, bpmUnit)
   }
 }

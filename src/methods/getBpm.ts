@@ -10,5 +10,13 @@ export default function getBPM(measureXML) {
     [direction] = direction
   }
 
-  return direction?.['direction-type']?.metronome?.['per-minute']
+  let directionType: any = null
+
+  if (isArray(direction?.['direction-type'])) {
+    [directionType] = direction?.['direction-type']
+  } else {
+    directionType = direction?.['direction-type']
+  }
+
+  return directionType?.metronome?.['per-minute']
 }

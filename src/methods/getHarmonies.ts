@@ -6,7 +6,7 @@ import formatNotes from './formatNotes'
  */
 function getName(root, kind) {
   const abbrs = {
-    major: 'M',
+    major: '',
     minor: 'm',
     augmented: 'aug',
     diminished: 'dim',

@@ -21,7 +21,7 @@ export default function App() {
   }
 
   useEffect(async() => {
-    const xmlDoc = await getXMLData('/xml/test/capo.xml')
+    const xmlDoc = await getXMLData('/xml/test/slur.xml')
     new MxmlQuery(xmlDoc, { debug: true })
   }, [])
 

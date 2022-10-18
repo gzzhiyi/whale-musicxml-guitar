@@ -1,13 +1,15 @@
 import noteTypeToNumberFn from './methods/noteTypeToNumber';
 import numberToNoteTypeFn from './methods/numberToNoteType';
 declare type OptionProps = {
-    debug: boolean;
-    bpm: number;
+    debug?: boolean;
+    bpm?: number;
+    bpmUnit?: string;
     speed?: number;
 };
 export declare class MxmlQuery {
     _debug: any;
     _bpm: any;
+    _bpmUnit: any;
     _speed: any;
     _oriXml: any;
     _oriParts: any;

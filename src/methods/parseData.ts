@@ -214,14 +214,16 @@ function createTimeline(measures, notes, bpmUnit) {
   let timeAddUp = 0
 
   notes.map((note) => {
-    const measure = find(measures, { id: note.measureId })
+    const { id, measureId } = note;
+    const measure = find(measures, { id: measureId })
     const { bpm } = measure // 支持动态切换bpm
     const duration = calNoteDuration(note, bpm, bpmUnit)
     const startTime = timeAddUp
     const endTime = timeAddUp + duration
 
     timeline.push({
-      noteId: note.id,
+      noteId: id,
+      measureId,
       duration,
       startTime,
       endTime

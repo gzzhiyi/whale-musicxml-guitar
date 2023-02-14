@@ -1,8 +1,10 @@
-import {
-  find,
-  isEmpty
-} from 'lodash'
+import { find, isEmpty } from 'lodash'
 
+/**
+ * Format note's data
+ * @param {object[]} data
+ * @returns
+ */
 function formatNoteData(data) {
   const arr: any = []
 

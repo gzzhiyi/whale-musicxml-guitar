@@ -9,5 +9,5 @@ export default function getScoreType(xml: any) {
     return 'timewise'
   }
 
-  return 'unkonw'
+  return ''
 }

@@ -10,5 +10,5 @@ export default function getScoreType(xml: any): ScoreType {
     return 'timewise'
   }
 
-  return 'unkonw'
+  return ''
 }

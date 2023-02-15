@@ -1,13 +1,13 @@
 {
   "name": "simple-musicxml-guitar",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "author": "gzzhiyi@gmail.com",
   "license": "MIT",
   "description": "Simple MusicXML for guitar.",
   "keywords": [
     "MusicXML",
-    "Guitar",
-    "Music"
+    "guitar",
+    "music"
   ],
   "scripts": {
     "dev": "rollup -c ./build/rollup.dev.config.js -w",
@@ -61,7 +61,7 @@
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
-  "homepage": "https://www.hezhiyi.com/guppy/docs/simple-musicxml/guitar/",
+  "homepage": "https://www.hezhiyi.com/guppy/docs/simple-music/",
   "browserslist": {
     "production": [
       ">0.2%",

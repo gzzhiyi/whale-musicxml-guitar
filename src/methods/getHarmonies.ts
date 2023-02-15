@@ -35,7 +35,7 @@ function getName(root, kind) {
 /**
  * 每个小节有几个拍
  */
-export default function getHarmonies(harmonyXML) {
+export default function getHarmonies(harmonyXML: any): object[] {
   const arr: any = []
 
   harmonyXML.map((item) => {

@@ -1,7 +1,4 @@
-import {
-  isArray,
-  isObject
-} from 'lodash'
+import { isArray, isObject } from 'lodash'
 
 export default function formatNotes(noteXML: any) {
   if (isArray(noteXML)) {

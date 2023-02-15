@@ -1,12 +1,9 @@
-import {
-  XMLValidator,
-  XMLParser
-} from 'fast-xml-parser'
+import { XMLValidator, XMLParser } from 'fast-xml-parser'
+import { NoteTypeString, ScoreType } from './types'
 import findChordName from './methods/findChordName'
 import findAllParts from './methods/findAllParts'
 import findAllMeasures from './methods/findAllMeasures'
 import findAllHarmonies from './methods/findAllHarmonies'
-import findAllNotes from './methods/findAllNotes'
 import getScoreType from './methods/getScoreType'
 import getClef from './methods/getClef'
 import getTuningStep from './methods/getTuningStep'
@@ -18,37 +15,47 @@ import parseData from './methods/parseData'
 import noteTypeToNumberFn from './methods/noteTypeToNumber'
 import numberToNoteTypeFn from './methods/numberToNoteType'
 
-function xmlToJson(mXML: string, preserveOrder = false) {
+/**
+ * Convert MusicXML to JSON
+ * @param {string} musicXML - MusicXML strings
+ * @returns
+ */
+function musicXMLToJson(musicXML: string) {
   const parser = new XMLParser({
     ignoreAttributes: false,
     attributeNamePrefix: "_",
-    preserveOrder
+    preserveOrder: false
   })
-  return parser.parse(mXML)
+  return parser.parse(musicXML)
 }
 
-type OptionProps = {
+// Option's props type
+interface OptionProps {
   debug?: boolean
   bpm?: number
-  bpmUnit?: string
+  bpmUnit?: NoteTypeString
   speed?: number
 }
 
+/**
+ * Query MusicXML Class.
+ * @example
+ * const Query = new MxmlQuery()
+ */
 export class MxmlQuery {
-  public _debug: any
-  public _bpm: any
-  public _bpmUnit: any
-  public _speed: any
+  private _debug: boolean = false
+  private _bpm: number = 0
+  private _bpmUnit: NoteTypeString = 'quarter'
+  private _speed: number = 1
 
-  public _oriXml: any
-  public _oriParts: any
-  public _oriMeasures: any
-  public _oriHarmonies: any
-  public _oriNotes: any
+  private _oriXml: any
+  private _oriParts: any
+  private _oriMeasures: any
+  private _oriHarmonies: any
 
   public xmlVersion: string = ''
   public scoreVersion: string = ''
-  public scoreType: string = ''
+  public scoreType: ScoreType = ''
   public clef: any
   public tuningStep: any
   public harmonies: any
@@ -63,23 +70,33 @@ export class MxmlQuery {
     }
 
     // Options
-    this._debug = option?.debug
-    this._bpm = option?.bpm
-    this._bpmUnit = option?.bpmUnit
-    this._speed = option?.speed
+    if (option?.debug) {
+      this._debug = option?.debug
+    }
 
-    // Origin
-    this._oriXml = xmlToJson(xml) || {}
+    if (option?.bpm) {
+      this._bpm = option?.bpm
+    }
+
+    if (option?.bpmUnit) {
+      this._bpmUnit = option?.bpmUnit
+    }
+
+    if (option?.speed) {
+      this._speed = option?.speed
+    }
+
+    // Mxml original data
+    this._oriXml = musicXMLToJson(xml) || {}
     this._oriParts = findAllParts(this._oriXml)
     this._oriMeasures = findAllMeasures(this._oriParts)
     this._oriHarmonies = findAllHarmonies(this._oriMeasures)
-    this._oriNotes = findAllNotes(this._oriMeasures)
 
-    // Attributes
+    // Class props
     this.xmlVersion = this._oriXml['?xml']?._version
     this.scoreVersion = this._oriXml['score-partwise']?._version || this._oriXml['score-timewise']?._version
     this.scoreType = getScoreType(this._oriXml)
-    this.clef = getClef(this._oriMeasures)
+    this.clef = getClef(this._oriMeasures) || {}
     this.tuningStep = getTuningStep(this._oriMeasures)
     this.harmonies = getHarmonies(this._oriHarmonies)
 
@@ -94,15 +111,15 @@ export class MxmlQuery {
     this._debug && console.log(this)
   }
 
-  getScoreDuration() {
+  getScoreDuration(): number {
     return getScoreDuration(this.timeline)
   }
 
-  getMeasureDuration(measureId) {
+  getMeasureDuration(measureId: string): number {
     return getMeasureDuration(measureId, this.notes, this.timeline)
   }
 
-  getNoteDuration(nodeId) {
+  getNoteDuration(nodeId: string): number {
     return getNoteDuration(nodeId, this.timeline)
   }
 }

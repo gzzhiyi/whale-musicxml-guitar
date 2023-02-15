@@ -4,7 +4,7 @@ import {
   find
 } from 'lodash'
 
-export default function getMeasureDuration(measureId, notes, timeline) {
+export default function getMeasureDuration(measureId: string, notes: any, timeline: any): number {
   const n = filter(notes, { measureId })
 
   let addup = 0

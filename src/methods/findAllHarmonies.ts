@@ -1,13 +1,11 @@
-import {
-  filter,
-  isArray
-} from 'lodash'
+import { filter, isArray } from 'lodash'
+import { Measure, Harmony } from '../types'
 
-export default function findAllHarmonies(measures: any) {
+export default function findAllHarmonies(measures: Measure[]): Harmony[] {
   const arr: any = []
 
   measures = filter(measures, 'harmony')
-  measures.map((item) => {
+  measures.map((item: Measure) => {
     const { harmony } = item
 
     if (isArray(harmony)) {

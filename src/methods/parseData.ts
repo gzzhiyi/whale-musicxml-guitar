@@ -5,6 +5,16 @@ import {
   find,
   filter
 } from 'lodash'
+import {
+  DotType,
+  Measure,
+  Note,
+  NoteTypeString,
+  NoteTypeNumber,
+  SlurType,
+  SlurNote,
+  Time
+} from '../types'
 import noteTypeToNumber from './noteTypeToNumber'
 import getBpm from './getBpm'
 import getBeats from './getBeats'
@@ -14,7 +24,7 @@ import getCapo from './getCapo'
 /**
  * 是否TAB音符
  */
-function isTabNote(noteXML) {
+function isTabNote(noteXML): boolean {
   const { notations } = noteXML
 
   return !isEmpty(notations) && !isEmpty(notations.technical)
@@ -23,35 +33,35 @@ function isTabNote(noteXML) {
 /**
  * 是否休止符
  */
-function isRest(noteXML) {
+function isRest(noteXML): boolean {
   return has(noteXML, 'rest')
 }
 
 /**
  * 是否和弦音符
  */
-function isChord(noteXML) {
+function isChord(noteXML): boolean {
   return has(noteXML, 'chord')
 }
 
 /**
  * 延音线判断
  */
-function hasTie(noteXML) {
+function hasTie(noteXML): boolean {
   return has(noteXML, 'tie')
 }
 
 /**
  * 连音判断
  */
-function hasSlur(noteXML) {
+function hasSlur(noteXML): boolean {
   return has(noteXML, 'time-modification')
 }
 
 /**
  * 是否附点
  */
-function hasDot(noteXML) {
+function hasDot(noteXML): DotType {
   if (!has(noteXML, 'dot')) {
     return ''
   }
@@ -66,7 +76,7 @@ function hasDot(noteXML) {
 /**
  * 创建空白节点
  */
-function createBlankNode(id, measureId) {
+function createBlankNode(id: string, measureId: string): Note {
   return {
     id,
     measureId,
@@ -79,7 +89,7 @@ function createBlankNode(id, measureId) {
 /**
  * 创建休止符节点
  */
-function createRestNode(id, measureId, noteXML) {
+function createRestNode(id: string, measureId: string, noteXML: any): Note {
   const { type } = noteXML
 
   return {
@@ -95,7 +105,7 @@ function createRestNode(id, measureId, noteXML) {
 /**
  * 创建单音符节点
  */
-function createSingleNode(id, measureId, noteXML) {
+function createSingleNode(id, measureId, noteXML): Note {
   const { type, notations, pitch } = noteXML
   const { fret, string } = notations.technical || {}
   const { step, octave, alter } = pitch
@@ -118,7 +128,7 @@ function createSingleNode(id, measureId, noteXML) {
 /**
  * 创建和弦节点
  */
-function createChordNode(noteXML, lastNode) {
+function createChordNode(noteXML, lastNode): Note {
   const { notations, pitch } = noteXML
   const { fret, string } = notations.technical
   const { step, octave, alter } = pitch
@@ -148,15 +158,13 @@ function createChordNode(noteXML, lastNode) {
 /**
  * 添加连音属性
  */
-function appendSlurProps(noteXML, slurType) {
+function appendSlurProps(noteXML: any, slurType: SlurType): SlurNote {
   const { 'time-modification': timeModification } = noteXML
 
   return {
-    slur: {
-      type: slurType,
-      actualNotes: timeModification['actual-notes'],
-      normalNotes: timeModification['normal-notes']
-    }
+    type: slurType,
+    actualNotes: timeModification['actual-notes'],
+    normalNotes: timeModification['normal-notes']
   }
 }
 
@@ -177,12 +185,12 @@ function appendTieProps(noteXML) {
 /**
  * 计算音符时长
  */
-function calNoteDuration(node, bpm, bpmUnit) {
+function calNoteDuration(node, bpm: number, bpmUnit: NoteTypeString) {
   const { type, slur, dot } = node
 
-  bpmUnit = noteTypeToNumber(bpmUnit) // 自定义BPM单位
+  const unit: number = noteTypeToNumber(bpmUnit) // 自定义BPM单位
 
-  let duration = Math.floor(60 / bpm * (bpmUnit / noteTypeToNumber(type)) * 1000)
+  let duration = Math.floor(60 / bpm * (unit / noteTypeToNumber(type)) * 1000)
 
   if (!isEmpty(slur)) { // 连音
     const { actualNotes, normalNotes, type } = slur
@@ -209,13 +217,18 @@ function calNoteDuration(node, bpm, bpmUnit) {
 /**
  * 创建时间轴
  */
-function createTimeline(measures, notes, bpmUnit) {
+function createTimeline(measures: Measure[], notes: Note[], bpmUnit: NoteTypeString): Time[] {
   const timeline: any = []
-  let timeAddUp = 0
+  let timeAddUp: number = 0
 
-  notes.map((note) => {
+  notes.map((note: Note) => {
     const { id, measureId } = note;
-    const measure = find(measures, { id: measureId })
+    const measure: Measure | undefined = find(measures, { id: measureId })
+
+    if (!measure) {
+      return;
+    }
+
     const { bpm } = measure // 支持动态切换bpm
     const duration = calNoteDuration(note, bpm, bpmUnit)
     const startTime = timeAddUp
@@ -235,6 +248,12 @@ function createTimeline(measures, notes, bpmUnit) {
   return timeline
 }
 
+interface QueryData {
+  measureList: Measure[]
+  noteList: Note[]
+  timeline: Time[]
+}
+
 /**
  * 解析数据
  */
@@ -242,15 +261,15 @@ export default function parseData(
   measureXML: any = [],
   clef: any = {},
   bpm: number = 0,
-  bpmUnit: string = 'quarter',
+  bpmUnit: NoteTypeString,
   speed: number = 1
-) {
-  const mList: any = []
-  const nList: any = []
+): QueryData {
+  const mList: Measure[] = []
+  const nList: Note[] = []
 
   let nodeCount = 1
-  let beats = 4
-  let beatType = 4
+  let beats: NoteTypeNumber
+  let beatType: NoteTypeNumber
   let globalBPM = 60
 
   measureXML.map((measure: any) => {
@@ -303,11 +322,11 @@ export default function parseData(
 
     let slurTotal = 0 // 需合并数量
     let slurMerged = 0 // 已合并数量
-    let slurType = '' // 连音类型
+    let slurType: SlurType = 'start' // 连音类型
 
     notes.map((subItem) => {
       const id: string = `N_${nodeCount}`
-      let node: any = {}
+      let node: Note = { id: '', measureId: '', type: 'quarter', view: 'single', data: null }
 
       if (isChord(subItem)) { // 和弦
         const end = nList.length - 1 // 取最后一个节点元素
@@ -347,10 +366,9 @@ export default function parseData(
           slurMerged = 0
         }
 
-        const props = appendSlurProps(subItem, slurType)
         node = {
           ...node,
-          ...props
+          slur: appendSlurProps(subItem, slurType)
         }
       }
 

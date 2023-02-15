@@ -1,39 +1,35 @@
-import {
-  isArray,
-  isEmpty,
-  isObject
-} from 'lodash'
+import { isArray, isEmpty, isObject } from 'lodash'
+import { Clef } from '../types'
 
-function findTab(clef) {
-  let config = {}
+/**
+ * Find tab from clef
+ */
+function findTab(clef: any): any {
+  let config: any
 
   if (isArray(clef)) {
     clef.map((o) => {
       if (o?.sign !== 'TAB') {
-        return
+        return null
       }
 
       const { line, sign, _number } = o
-      config = {
-        line,
-        sign,
-        number: _number
-      }
+      config = { line, sign, number: _number }
     })
   } else if (isObject(clef)) {
     const o: any = clef
     const { line, sign } = o
-    config = {
-      line,
-      sign
-    }
+    config = { line, sign }
   }
 
   return config
 }
 
-export default function getClef(measureXML: any, type: string = 'TAB') {
-  let config = {}
+/**
+ * 获取谱号信息
+ */
+export default function getClef(measureXML: any): Clef | null {
+  let config: any
 
   measureXML.map((item: any) => {
     const { attributes } = item
@@ -48,9 +44,7 @@ export default function getClef(measureXML: any, type: string = 'TAB') {
       return
     }
 
-    if (type === 'TAB') {
-      config = findTab(clef)
-    }
+    config = findTab(clef)
   })
 
   return config

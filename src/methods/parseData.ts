@@ -5,14 +5,6 @@ import {
   find,
   filter
 } from 'lodash'
-import {
-  DotType,
-  Measure,
-  Note,
-  NoteTypeValue,
-  SlurType,
-  SlurNote
-} from '../types'
 import noteTypeToNumber from './noteTypeToNumber'
 import getBpm from './getBpm'
 import getBeats from './getBeats'
@@ -22,7 +14,7 @@ import getCapo from './getCapo'
 /**
  * 是否TAB音符
  */
-function isTabNote(noteXML): boolean {
+function isTabNote(noteXML) {
   const { notations } = noteXML
 
   return !isEmpty(notations) && !isEmpty(notations.technical)
@@ -31,35 +23,35 @@ function isTabNote(noteXML): boolean {
 /**
  * 是否休止符
  */
-function isRest(noteXML): boolean {
+function isRest(noteXML) {
   return has(noteXML, 'rest')
 }
 
 /**
  * 是否和弦音符
  */
-function isChord(noteXML): boolean {
+function isChord(noteXML) {
   return has(noteXML, 'chord')
 }
 
 /**
  * 延音线判断
  */
-function hasTie(noteXML): boolean {
+function hasTie(noteXML) {
   return has(noteXML, 'tie')
 }
 
 /**
  * 连音判断
  */
-function hasSlur(noteXML): boolean {
+function hasSlur(noteXML) {
   return has(noteXML, 'time-modification')
 }
 
 /**
  * 是否附点
  */
-function hasDot(noteXML): DotType {
+function hasDot(noteXML) {
   if (!has(noteXML, 'dot')) {
     return ''
   }
@@ -74,7 +66,7 @@ function hasDot(noteXML): DotType {
 /**
  * 创建空白节点
  */
-function createBlankNode(id: string, measureId: string): Note {
+function createBlankNode(id, measureId) {
   return {
     id,
     measureId,
@@ -87,7 +79,7 @@ function createBlankNode(id: string, measureId: string): Note {
 /**
  * 创建休止符节点
  */
-function createRestNode(id: string, measureId: string, noteXML: any): Note {
+function createRestNode(id, measureId, noteXML) {
   const { type } = noteXML
 
   return {
@@ -103,7 +95,7 @@ function createRestNode(id: string, measureId: string, noteXML: any): Note {
 /**
  * 创建单音符节点
  */
-function createSingleNode(id, measureId, noteXML): Note {
+function createSingleNode(id, measureId, noteXML) {
   const { type, notations, pitch } = noteXML
   const { fret, string } = notations.technical || {}
   const { step, octave, alter } = pitch
@@ -126,7 +118,7 @@ function createSingleNode(id, measureId, noteXML): Note {
 /**
  * 创建和弦节点
  */
-function createChordNode(noteXML, lastNode): Note {
+function createChordNode(noteXML, lastNode) {
   const { notations, pitch } = noteXML
   const { fret, string } = notations.technical
   const { step, octave, alter } = pitch
@@ -156,13 +148,15 @@ function createChordNode(noteXML, lastNode): Note {
 /**
  * 添加连音属性
  */
-function appendSlurProps(noteXML: any, slurType: SlurType): SlurNote {
+function appendSlurProps(noteXML, slurType) {
   const { 'time-modification': timeModification } = noteXML
 
   return {
-    type: slurType,
-    actualNotes: timeModification['actual-notes'],
-    normalNotes: timeModification['normal-notes']
+    slur: {
+      type: slurType,
+      actualNotes: timeModification['actual-notes'],
+      normalNotes: timeModification['normal-notes']
+    }
   }
 }
 
@@ -248,15 +242,15 @@ export default function parseData(
   measureXML: any = [],
   clef: any = {},
   bpm: number = 0,
-  bpmUnit: NoteTypeValue,
+  bpmUnit: string = 'quarter',
   speed: number = 1
 ) {
-  const mList: Measure[] = []
-  const nList: Note[] = []
+  const mList: any = []
+  const nList: any = []
 
   let nodeCount = 1
-  let beats: NoteTypeValue
-  let beatType: NoteTypeValue
+  let beats = 4
+  let beatType = 4
   let globalBPM = 60
 
   measureXML.map((measure: any) => {
@@ -309,11 +303,11 @@ export default function parseData(
 
     let slurTotal = 0 // 需合并数量
     let slurMerged = 0 // 已合并数量
-    let slurType: SlurType = 'start' // 连音类型
+    let slurType = '' // 连音类型
 
     notes.map((subItem) => {
       const id: string = `N_${nodeCount}`
-      let node: Note = { id: '', measureId: '', type: 'quarter', view: 'single', data: null }
+      let node: any = {}
 
       if (isChord(subItem)) { // 和弦
         const end = nList.length - 1 // 取最后一个节点元素
@@ -353,9 +347,10 @@ export default function parseData(
           slurMerged = 0
         }
 
+        const props = appendSlurProps(subItem, slurType)
         node = {
           ...node,
-          slur: appendSlurProps(subItem, slurType)
+          ...props
         }
       }
 

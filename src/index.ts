@@ -1,5 +1,7 @@
-import { XMLValidator, XMLParser } from 'fast-xml-parser'
-import { NoteTypeValue, ScoreType } from './types'
+import {
+  XMLValidator,
+  XMLParser
+} from 'fast-xml-parser'
 import findChordName from './methods/findChordName'
 import findAllParts from './methods/findAllParts'
 import findAllMeasures from './methods/findAllMeasures'
@@ -28,15 +30,15 @@ function xmlToJson(mXML: string, preserveOrder = false) {
 type OptionProps = {
   debug?: boolean
   bpm?: number
-  bpmUnit?: NoteTypeValue
+  bpmUnit?: string
   speed?: number
 }
 
 export class MxmlQuery {
-  public _debug: boolean = false
-  public _bpm: number = 0
-  public _bpmUnit: NoteTypeValue = 'quarter'
-  public _speed: number = 1
+  public _debug: any
+  public _bpm: any
+  public _bpmUnit: any
+  public _speed: any
 
   public _oriXml: any
   public _oriParts: any
@@ -46,7 +48,7 @@ export class MxmlQuery {
 
   public xmlVersion: string = ''
   public scoreVersion: string = ''
-  public scoreType: ScoreType = ''
+  public scoreType: string = ''
   public clef: any
   public tuningStep: any
   public harmonies: any
@@ -61,23 +63,12 @@ export class MxmlQuery {
     }
 
     // Options
-    if (option?.debug) {
-      this._debug = option?.debug
-    }
+    this._debug = option?.debug
+    this._bpm = option?.bpm
+    this._bpmUnit = option?.bpmUnit
+    this._speed = option?.speed
 
-    if (option?.bpm) {
-      this._bpm = option?.bpm
-    }
-
-    if (option?.bpmUnit) {
-      this._bpmUnit = option?.bpmUnit
-    }
-
-    if (option?.speed) {
-      this._speed = option?.speed
-    }
-
-    // Origins
+    // Origin
     this._oriXml = xmlToJson(xml) || {}
     this._oriParts = findAllParts(this._oriXml)
     this._oriMeasures = findAllMeasures(this._oriParts)

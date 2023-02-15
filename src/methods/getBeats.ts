@@ -1,9 +1,7 @@
-import { NoteTypeValue } from '../types'
-
 /**
  * 每个小节有几个拍
  */
-export default function getBeats(measureXML): NoteTypeValue {
+export default function getBeats(measureXML) {
   const { attributes } = measureXML
-  return attributes?.time?.beats || 4
+  return attributes?.time?.beats
 }

@@ -1,4 +1,7 @@
-import { isArray, isObject } from 'lodash'
+import {
+  isArray,
+  isObject
+} from 'lodash'
 
 /**
  * 是否六线谱
@@ -26,7 +29,7 @@ function isTAB(measureXML) {
   return res
 }
 
-function getMeasure(measureXML, partId: string) {
+function getMeasure(measureXML, partId) {
   if (isArray(measureXML)) {
     const arr: any = []
 

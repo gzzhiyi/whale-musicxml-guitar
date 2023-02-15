@@ -1,1 +1,1 @@
-export default function getTuningStep(measuresXML: any): never[];
+export default function getTuningStep(measuresXML: any): string[];

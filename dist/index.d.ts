@@ -1,24 +1,24 @@
+import { NoteTypeString, ScoreType } from './types';
 import noteTypeToNumberFn from './methods/noteTypeToNumber';
 import numberToNoteTypeFn from './methods/numberToNoteType';
-declare type OptionProps = {
+interface OptionProps {
     debug?: boolean;
     bpm?: number;
-    bpmUnit?: string;
+    bpmUnit?: NoteTypeString;
     speed?: number;
-};
+}
 export declare class MxmlQuery {
-    _debug: any;
-    _bpm: any;
-    _bpmUnit: any;
-    _speed: any;
-    _oriXml: any;
-    _oriParts: any;
-    _oriMeasures: any;
-    _oriHarmonies: any;
-    _oriNotes: any;
+    private _debug;
+    private _bpm;
+    private _bpmUnit;
+    private _speed;
+    private _oriXml;
+    private _oriParts;
+    private _oriMeasures;
+    private _oriHarmonies;
     xmlVersion: string;
     scoreVersion: string;
-    scoreType: string;
+    scoreType: ScoreType;
     clef: any;
     tuningStep: any;
     harmonies: any;
@@ -26,9 +26,9 @@ export declare class MxmlQuery {
     notes: any;
     timeline: any;
     constructor(xml: string, option?: OptionProps);
-    getScoreDuration(): any;
-    getMeasureDuration(measureId: any): number;
-    getNoteDuration(nodeId: any): any;
+    getScoreDuration(): number;
+    getMeasureDuration(measureId: string): number;
+    getNoteDuration(nodeId: string): number;
 }
 export declare const noteTypeToNumber: typeof noteTypeToNumberFn;
 export declare const numberToNoteType: typeof numberToNoteTypeFn;

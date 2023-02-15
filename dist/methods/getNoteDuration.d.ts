@@ -1,1 +1,1 @@
-export default function getNoteDuration(nodeId: any, timeline: any): any;
+export default function getNoteDuration(nodeId: string, timeline: any): number;

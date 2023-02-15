@@ -1,1 +1,1 @@
-export default function getMeasureDuration(measureId: any, notes: any, timeline: any): number;
+export default function getMeasureDuration(measureId: string, notes: any, timeline: any): number;

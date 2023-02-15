@@ -1,1 +1,1 @@
-export default function getCapo(measureXML: any): any;
+export default function getCapo(measureXML: any): number;

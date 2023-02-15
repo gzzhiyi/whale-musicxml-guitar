@@ -1,1 +1,1 @@
-export default function getScoreDuration(timeline: any): any;
+export default function getScoreDuration(timeline: any): number;

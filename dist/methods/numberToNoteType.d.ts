@@ -1,1 +1,2 @@
-export default function numberToNoteType(num: any): any;
+import { NoteTypeString } from '../types';
+export default function numberToNoteType(num: number): NoteTypeString;

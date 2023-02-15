@@ -1,1 +1,2 @@
-export default function getScoreType(xml: any): "partwise" | "timewise" | "unkonw";
+import { ScoreType } from '../types';
+export default function getScoreType(xml: any): ScoreType;

@@ -1,1 +1,2 @@
-export default function getBeatType(measureXML: any): any;
+import { NoteTypeNumber } from '../types';
+export default function getBeatType(measureXML: any): NoteTypeNumber;

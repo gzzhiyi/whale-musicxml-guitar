@@ -1,1 +1,1 @@
-export default function getBPM(measureXML: any): any;
+export default function getBPM(measureXML: any): number;

@@ -39,6 +39,7 @@ export interface Measure {
   beatType: NoteTypeNumber
   capo: number
   harmony?: any
+  _number?: string
 }
 
 // Note type

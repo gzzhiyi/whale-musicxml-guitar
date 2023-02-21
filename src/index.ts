@@ -23,7 +23,7 @@ import numberToNoteTypeFn from './methods/numberToNoteType'
 function musicXMLToJson(musicXML: string) {
   const parser = new XMLParser({
     ignoreAttributes: false,
-    attributeNamePrefix: "_",
+    attributeNamePrefix: '_',
     preserveOrder: false
   })
   return parser.parse(musicXML)

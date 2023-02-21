@@ -1,4 +1,3 @@
-import { uniqBy } from 'lodash'
 import formatNotes from './formatNotes'
 
 /**
@@ -33,20 +32,45 @@ function getName(root, kind) {
 }
 
 /**
+ * 去重
+ */
+function uniq(arr: any) {
+  let [tempId, tempName] = ''
+
+  const tempArr: any = []
+
+  arr.map((item) => {
+    const { measureId, name } = item
+
+    if (measureId === tempId && name === tempName) {
+      return
+    }
+
+    tempId = measureId
+    tempName = name
+
+    tempArr.push(item)
+  })
+
+  return tempArr
+}
+
+/**
  * 每个小节有几个拍
  */
 export default function getHarmonies(harmonyXML: any): object[] {
   const arr: any = []
 
   harmonyXML.map((item) => {
-    const { root, kind, frame } = item
+    const { root, kind, frame, measureId } = item
 
     arr.push({
+      measureId,
       name: getName(root, kind),
       firstFret: frame['first-fret'] || 1,
       data: formatNotes(frame['frame-note'])
     })
   })
 
-  return uniqBy(arr, 'name')
+  return uniq(arr)
 }

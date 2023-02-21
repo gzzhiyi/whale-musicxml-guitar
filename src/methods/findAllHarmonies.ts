@@ -6,16 +6,16 @@ export default function findAllHarmonies(measures: Measure[]): Harmony[] {
 
   measures = filter(measures, 'harmony')
   measures.map((item: Measure) => {
-    const { harmony } = item
+    const { _number, harmony } = item
 
     if (isArray(harmony)) {
-      harmony.map((item) => {
-        arr.push(item)
+      harmony.map((subItem) => {
+        arr.push({ ...subItem, measureId: `M_${_number}` })
       })
       return
     }
 
-    arr.push(harmony)
+    arr.push({ ...harmony, measureId: `M_${_number}` })
   })
 
   return arr

@@ -1,5 +1,5 @@
 import { XMLValidator, XMLParser } from 'fast-xml-parser'
-import { NoteTypeString, ScoreType } from './types'
+import { NoteType, ScoreType } from './types'
 import findChordName from './methods/findChordName'
 import findAllParts from './methods/findAllParts'
 import findAllMeasures from './methods/findAllMeasures'
@@ -33,7 +33,7 @@ function musicXMLToJson(musicXML: string) {
 interface OptionProps {
   debug?: boolean
   bpm?: number
-  bpmUnit?: NoteTypeString
+  bpmUnit?: NoteType
   speed?: number
 }
 
@@ -45,7 +45,7 @@ interface OptionProps {
 export class MxmlQuery {
   private _debug: boolean = false
   private _bpm: number = 0
-  private _bpmUnit: NoteTypeString = 'quarter'
+  private _bpmUnit: NoteType = 'quarter'
   private _speed: number = 1
 
   private _oriXml: any

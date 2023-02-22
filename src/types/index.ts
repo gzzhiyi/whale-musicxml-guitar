@@ -1,8 +1,5 @@
 // Note's type string type
-export type NoteTypeString = 'whole' | 'half' | 'quarter' | 'eighth' | '16th' | '32th' | '64th' | '128th' | '256th' | '512th' | '1024th'
-
-// Note's type number type
-export type NoteTypeNumber = 1 | 2 | 4 | 8 | 16 | 32 | 64 | 128 | 256 | 512 | 1024
+export type NoteType = 'whole' | 'half' | 'quarter' | 'eighth' | '16th' | '32th' | '64th' | '128th' | '256th' | '512th' | '1024th'
 
 // Note's view type
 export type NoteView = 'single' | 'chord' | 'rest' | 'blank'
@@ -35,8 +32,8 @@ export interface Measure {
   id: string
   partId: string
   bpm: number
-  beats: NoteTypeNumber
-  beatType: NoteTypeNumber
+  beats: number
+  beatType: number
   capo: number
   harmony?: any
   _number?: string
@@ -47,7 +44,7 @@ export interface Note {
   id: string
   name?: string
   measureId: string
-  type: NoteTypeString
+  type: NoteType
   view: NoteView
   data: any
   dot?: DotType

@@ -1,10 +1,10 @@
-import { NoteTypeString, ScoreType } from './types';
+import { NoteType, ScoreType } from './types';
 import noteTypeToNumberFn from './methods/noteTypeToNumber';
 import numberToNoteTypeFn from './methods/numberToNoteType';
 interface OptionProps {
     debug?: boolean;
     bpm?: number;
-    bpmUnit?: NoteTypeString;
+    bpmUnit?: NoteType;
     speed?: number;
 }
 export declare class MxmlQuery {

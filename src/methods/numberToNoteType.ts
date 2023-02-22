@@ -1,9 +1,9 @@
-import { NoteTypeString } from '../types'
+import { NoteType } from '../types'
 
 /**
  * 数字转成音符类型
  */
-export default function numberToNoteType(num: number): NoteTypeString {
+export default function numberToNoteType(num: number): NoteType {
   const types = {
     1: 'whole',
     2: 'half',

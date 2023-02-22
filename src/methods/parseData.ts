@@ -9,8 +9,7 @@ import {
   DotType,
   Measure,
   Note,
-  NoteTypeString,
-  NoteTypeNumber,
+  NoteType,
   SlurType,
   SlurNote,
   Time
@@ -185,7 +184,7 @@ function appendTieProps(noteXML) {
 /**
  * 计算音符时长
  */
-function calNoteDuration(node, bpm: number, bpmUnit: NoteTypeString) {
+function calNoteDuration(node, bpm: number, bpmUnit: NoteType) {
   const { type, slur, dot } = node
 
   const unit: number = noteTypeToNumber(bpmUnit) // 自定义BPM单位
@@ -217,7 +216,7 @@ function calNoteDuration(node, bpm: number, bpmUnit: NoteTypeString) {
 /**
  * 创建时间轴
  */
-function createTimeline(measures: Measure[], notes: Note[], bpmUnit: NoteTypeString): Time[] {
+function createTimeline(measures: Measure[], notes: Note[], bpmUnit: NoteType): Time[] {
   const timeline: any = []
   let timeAddUp: number = 0
 
@@ -261,15 +260,15 @@ export default function parseData(
   measureXML: any = [],
   clef: any = {},
   bpm: number = 0,
-  bpmUnit: NoteTypeString,
+  bpmUnit: NoteType,
   speed: number = 1
 ): QueryData {
   const mList: Measure[] = []
   const nList: Note[] = []
 
   let nodeCount = 1
-  let beats: NoteTypeNumber
-  let beatType: NoteTypeNumber
+  let beats: number
+  let beatType: number
   let globalBPM = 60
 
   measureXML.map((measure: any) => {

@@ -22,6 +22,7 @@ export interface Measure {
     beatType: NoteTypeNumber;
     capo: number;
     harmony?: any;
+    _number?: string;
 }
 export interface Note {
     id: string;

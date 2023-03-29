@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import axios from 'axios'
-import { MxmlQuery } from '../dist/index.esm.js'
+import { SMGuitar } from '../dist/index.esm.js'
 
 export default function App() {
   async function getXMLData(xmlUrl) {
@@ -21,8 +21,8 @@ export default function App() {
   }
 
   useEffect(async() => {
-    const xmlDoc = await getXMLData('/xml/test/arpeggio.xml')
-    new MxmlQuery(xmlDoc, { debug: true })
+    const xmlDoc = await getXMLData('/xml/test/chord.xml')
+    new SMGuitar(xmlDoc, { debug: true })
   }, [])
 
   return (

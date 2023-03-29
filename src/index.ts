@@ -1,33 +1,16 @@
-import { XMLValidator, XMLParser } from 'fast-xml-parser'
+import { XMLValidator } from 'fast-xml-parser'
 import { NoteType, ScoreType } from './types'
-import findChordName from './methods/findChordName'
-import findAllParts from './methods/findAllParts'
-import findAllMeasures from './methods/findAllMeasures'
-import findAllHarmonies from './methods/findAllHarmonies'
-import getScoreType from './methods/getScoreType'
-import getClef from './methods/getClef'
-import getTuningStep from './methods/getTuningStep'
-import getHarmonies from './methods/getHarmonies'
-import getScoreDuration from './methods/getScoreDuration'
-import getMeasureDuration from './methods/getMeasureDuration'
-import getNoteDuration from './methods/getNoteDuration'
-import parseData from './methods/parseData'
-import noteTypeToNumberFn from './methods/noteTypeToNumber'
-import numberToNoteTypeFn from './methods/numberToNoteType'
-
-/**
- * Convert MusicXML to JSON
- * @param {string} musicXML - MusicXML strings
- * @returns
- */
-function musicXMLToJson(musicXML: string) {
-  const parser = new XMLParser({
-    ignoreAttributes: false,
-    attributeNamePrefix: '_',
-    preserveOrder: false
-  })
-  return parser.parse(musicXML)
-}
+import parseToJson from './core/parseToJson'
+import findAllParts from './core/findAllParts'
+import findAllMeasures from './core/findAllMeasures'
+import findAllHarmonies from './core/findAllHarmonies'
+import getScoreType from './core/getScoreType'
+import getClef from './core/getClef'
+import getTuningStep from './core/getTuningStep'
+import getHarmonies from './core/getHarmonies'
+import parseData from './core/parseData'
+import noteTypeToNumberFn from './core/noteTypeToNumber'
+import numberToNoteTypeFn from './core/numberToNoteType'
 
 // Option's props type
 interface OptionProps {
@@ -38,30 +21,29 @@ interface OptionProps {
 }
 
 /**
- * Query MusicXML Class.
+ * SMGuitar Class.
  * @example
- * const Query = new MxmlQuery()
+ * const SMG = new SMGuitar()
  */
-export class MxmlQuery {
-  private _debug: boolean = false
-  private _bpm: number = 0
-  private _bpmUnit: NoteType = 'quarter'
-  private _speed: number = 1
+export class SMGuitar {
+  public xmlVersion: string = '' // XML版本
+  public scoreVersion: string = '' // 曲谱版本
+  public scoreType: ScoreType = '' // 曲谱类型
+  public clef: any // 谱号
+  public tuningStep: any // 标准调弦
+  public harmonies: any // 和弦图
+  public measures: any // 小节
+  public notes: any // 音符
+
+  private _bpm: number = 0 // BPM
+  private _bpmUnit: NoteType = 'quarter' // BPM单位
+  private _speed: number = 1 // 速度
+  private _debug: boolean = false // 调试模式
 
   private _oriXml: any
   private _oriParts: any
   private _oriMeasures: any
   private _oriHarmonies: any
-
-  public xmlVersion: string = ''
-  public scoreVersion: string = ''
-  public scoreType: ScoreType = ''
-  public clef: any
-  public tuningStep: any
-  public harmonies: any
-  public measures: any
-  public notes: any
-  public timeline: any
 
   constructor(xml: string, option?: OptionProps) {
     if (!XMLValidator.validate(xml)) { // 校验是否合格的XML文件类型
@@ -86,8 +68,8 @@ export class MxmlQuery {
       this._speed = option?.speed
     }
 
-    // Mxml original data
-    this._oriXml = musicXMLToJson(xml) || {}
+    // Original datas
+    this._oriXml = parseToJson(xml) || {}
     this._oriParts = findAllParts(this._oriXml)
     this._oriMeasures = findAllMeasures(this._oriParts)
     this._oriHarmonies = findAllHarmonies(this._oriMeasures)
@@ -100,28 +82,21 @@ export class MxmlQuery {
     this.tuningStep = getTuningStep(this._oriMeasures)
     this.harmonies = getHarmonies(this._oriHarmonies)
 
-    const { measureList, noteList, timeline } = parseData(this._oriMeasures, this.clef, this._bpm, this._bpmUnit, this._speed)
+    const { measureList, noteList } = parseData(this._oriMeasures, this.clef, this._bpm, this._bpmUnit, this._speed)
     this.measures = measureList
     this.notes = noteList
-    this.timeline = timeline
-
-    findChordName(this.notes, this.harmonies)
 
     // Logs
     this._debug && console.log(this)
   }
 
-  getScoreDuration(): number {
-    return getScoreDuration(this.timeline)
-  }
+  getScoreDuration(): any {}
 
-  getMeasureDuration(measureId: string): number {
-    return getMeasureDuration(measureId, this.notes, this.timeline)
-  }
+  getMeasureDuration(): any {}
 
-  getNoteDuration(nodeId: string): number {
-    return getNoteDuration(nodeId, this.timeline)
-  }
+  getNoteDuration(): any {}
+
+  getChordName(): any {}
 }
 
 export const noteTypeToNumber = noteTypeToNumberFn

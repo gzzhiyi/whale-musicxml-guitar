@@ -1,11 +1,8 @@
-import {
-  isArray,
-  isObject
-} from 'lodash'
+import { isArray, isObject } from 'lodash'
 
-export default function findAllParts(xml: string) {
+export default function findAllParts(xml: string): any {
   const partwise = xml['score-partwise']
-  const part = partwise.part
+  const { part } = partwise
 
   if (isArray(part)) {
     return part

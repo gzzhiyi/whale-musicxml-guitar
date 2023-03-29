@@ -39,6 +39,14 @@ export interface Measure {
   _number?: string
 }
 
+// Note's Data yype
+export interface NoteData {
+  string: number
+  fret: number
+  step: string
+  octave: number
+}
+
 // Note type
 export interface Note {
   id: string

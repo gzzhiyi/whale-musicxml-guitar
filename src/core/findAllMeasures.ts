@@ -1,10 +1,7 @@
-import {
-  isArray,
-  isObject
-} from 'lodash'
+import { isArray, isObject } from 'lodash'
 
 /**
- * 是否六线谱
+ * 判断是否六线谱
  */
 function isTAB(measureXML) {
   if (isArray(measureXML)) {

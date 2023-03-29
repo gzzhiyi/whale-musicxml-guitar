@@ -14,6 +14,7 @@ import {
   SlurNote,
   Time
 } from '../types'
+import getChordName from './getChordName'
 import noteTypeToNumber from './noteTypeToNumber'
 import getBpm from './getBpm'
 import getBeats from './getBeats'
@@ -115,7 +116,7 @@ function createSingleNode(id, measureId, noteXML): Note {
     type,
     view: 'single',
     data: {
-      string: string - 1, // MusicXML的string是从1开始
+      string, // MusicXML的string是从1开始
       fret,
       step: alter ? `${step}#` : step,
       octave
@@ -133,7 +134,7 @@ function createChordNode(noteXML, lastNode): Note {
   const { step, octave, alter } = pitch
 
   const nodeData = {
-    string: string - 1, // MusicXML的string是从1开始
+    string, // MusicXML的string是从1开始
     fret,
     step: alter ? `${step}#` : step,
     octave
@@ -141,6 +142,7 @@ function createChordNode(noteXML, lastNode): Note {
 
   if (lastNode.view === 'chord') { // 如果前一个节点是和弦类型，则直接做添加处理
     lastNode.data.push(nodeData)
+    lastNode.name = getChordName(lastNode.data)
     return lastNode
   }
 
@@ -149,6 +151,7 @@ function createChordNode(noteXML, lastNode): Note {
     measureId: lastNode.measureId,
     type: lastNode.type,
     view: 'chord',
+    name: '',
     data: [lastNode.data, nodeData],
     dot: lastNode.dot || hasDot(noteXML)
   }

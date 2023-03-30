@@ -1,5 +1,5 @@
 import { isArray, isEmpty, isObject } from 'lodash'
-import { Clef } from '../types'
+import { Clef, MeasureXML } from '../../types'
 
 /**
  * Find tab from clef
@@ -28,7 +28,7 @@ function findTab(clef: any): any {
 /**
  * 获取谱号信息
  */
-export default function getClef(measureXML: any): Clef | null {
+export default function getClef(measureXML: MeasureXML[]): Clef | null {
   let config: any
 
   measureXML.map((item: any) => {

@@ -1,5 +1,6 @@
-import formatNoteData from './formatNoteData'
-import getChordName from './getChordName'
+import { HarmonyXML, Harmony } from '../../types'
+import formatNoteData from '../note/formatNoteData'
+import getChordName from '../note/getChordName'
 
 /**
  * 去重
@@ -28,7 +29,7 @@ function uniq(arr: any) {
 /**
  * 每个小节有几个拍
  */
-export default function getHarmonies(harmonyXML: any): object[] {
+export default function getHarmonies(harmonyXML: HarmonyXML[]): Harmony[] {
   const arr: any = []
 
   harmonyXML.map((item) => {

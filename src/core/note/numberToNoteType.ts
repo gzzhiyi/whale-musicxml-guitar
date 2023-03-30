@@ -1,4 +1,4 @@
-import { NoteType } from '../types'
+import { NoteType } from '../../types'
 
 /**
  * 数字转成音符类型

@@ -1,9 +1,10 @@
 import { isArray, isObject } from 'lodash'
+import { MeasureXML } from '../../types'
 
 /**
  * 判断是否六线谱
  */
-function isTAB(measureXML) {
+function isTAB(measureXML: MeasureXML | MeasureXML[]): boolean {
   if (isArray(measureXML)) {
     measureXML = measureXML[0]
   }
@@ -26,7 +27,7 @@ function isTAB(measureXML) {
   return res
 }
 
-function getMeasure(measureXML, partId) {
+function getMeasure(measureXML: MeasureXML | MeasureXML[], partId: string): MeasureXML[] {
   if (isArray(measureXML)) {
     const arr: any = []
 
@@ -50,9 +51,12 @@ function getMeasure(measureXML, partId) {
   return []
 }
 
-export default function findAllMeasures(partsXML) {
+/**
+ * 查找所有<measure>
+ * @param {!any} partsXML
+ */
+export default function findAllMeasures(partsXML: any): any[] {
   let arr = []
-
   partsXML.map((item: any) => {
     if (!isTAB(item.measure)) {
       return

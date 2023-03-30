@@ -341,7 +341,19 @@ const ChordNameMap = {
   'G#|D#|': 'G#5',
   'A|E|': 'A5',
   'A#|F|': 'A#5',
-  'B|F#|': 'B5'
+  'B|F#|': 'B5',
+  'C|D|E|G': 'Cadd9',
+  'C#|D#|F|G#': 'C#add9',
+  'D|E|F#|A': 'Dadd9',
+  'D#|F|G|A#': 'D#add9',
+  'E|F#|G#|B': 'Eadd9',
+  'F|G|A|C': 'Fadd9',
+  'F#|G#|A#|C#': 'F#add9',
+  'G|A|B|D': 'Gadd9',
+  'G#|A#|C|D#': 'G#add9',
+  'A|B|C#|E': 'Aadd9',
+  'A#|C|D|F': 'A#add9',
+  'B|C#|D#|F#': 'Badd9'
 }
 
 /**

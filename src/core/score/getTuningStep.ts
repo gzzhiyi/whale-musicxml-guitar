@@ -1,6 +1,7 @@
 import { isArray, isEmpty } from 'lodash'
+import { MeasureXML } from '../../types'
 
-export default function getTuningStep(measuresXML: any): string[] {
+export default function getTuningStep(measuresXML: MeasureXML[]): string[] {
   let names = [];
 
   measuresXML.map((item: any) => {

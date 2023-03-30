@@ -13,22 +13,8 @@ export type DotType = 'dot' | 'doubleDot' | ''
 // Slur type type
 export type SlurType = 'start' | 'continue' | 'end'
 
-// Clef type
-export interface Clef {
-  line: number
-  sign: string
-  number?: string
-}
-
-// Slur note type
-export interface SlurNote {
-  type: SlurType
-  actualNotes: number
-  normalNotes: number
-}
-
-// Measure type
-export interface Measure {
+// Measure XML type
+export interface MeasureXML {
   id: string
   partId: string
   bpm: number
@@ -37,6 +23,45 @@ export interface Measure {
   capo: number
   harmony?: any
   _number?: string
+  [propName: string]: any
+}
+
+// Harmony XML Type
+export interface HarmonyXML {
+  measureId
+  frame: {
+    'first-fret': number
+    'frame-note': {
+      string: number
+      fret: number
+    }
+  }
+}
+
+// Clef type
+export interface Clef {
+  line?: number
+  sign?: string
+  number?: string
+}
+
+// Harmony Type
+export interface Harmony {
+  firstFret: number
+  name: string
+  data: {
+    string: number
+    fret: number
+    step: string
+    octave: string
+  }
+}
+
+// Slur note type
+export interface SlurNote {
+  type: SlurType
+  actualNotes: number
+  normalNotes: number
 }
 
 // Note's Data yype
@@ -66,16 +91,4 @@ export interface Time {
   duration: number
   startTime: number
   endTime: number
-}
-
-// Harmony Type
-export interface Harmony {
-  firstFret: number
-  name: string
-  data: {
-    string: number
-    fret: number
-    step: string
-    octave: string
-  }
 }

@@ -1,5 +1,5 @@
 import { isArray, isObject } from 'lodash'
-import { Note, NoteXML } from '../../types'
+import { Note, NoteData, NoteXML } from '../../types'
 import { hasDot } from '../validate'
 import getChordName from './getChordName'
 
@@ -17,12 +17,12 @@ export default function setChordNoteProps(note: Note, noteXML: NoteXML): Note {
   const nodeData = { string, fret } // MusicXML的string是从1开始
 
   if (note.view === 'chord' && isArray(note.data)) { // 如果前一个节点是和弦类型，则直接做添加处理
-    note.data.push(nodeData)
+    note.data = [...note.data, nodeData]
     note.name = getChordName(note.data)
     return note
   }
 
-  let data: any[] = []
+  let data: NoteData[] = []
   if (isArray(note.data)) {
     data = [...note.data, nodeData]
   } else if (isObject(note.data)) {
@@ -32,7 +32,6 @@ export default function setChordNoteProps(note: Note, noteXML: NoteXML): Note {
   return {
     ...note,
     view: 'chord',
-    name: '',
     data,
     dot: note.dot || hasDot(noteXML)
   }

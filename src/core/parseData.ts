@@ -107,6 +107,7 @@ export default function parseData(
         const lastNode: Note = nList[index]
         const node: Note = setChordNoteProps(lastNode, subItem)
         nList[index] = node
+        return
       } else if (isRest(subItem)) { // 休止符
         node = setRestNoteProps(node, subItem)
       } else if (isTabNote(subItem)) { // 单音符

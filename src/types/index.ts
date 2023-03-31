@@ -1,19 +1,19 @@
-// Note's type string type
+// 音符类型
 export type NoteType = 'whole' | 'half' | 'quarter' | 'eighth' | '16th' | '32th' | '64th' | '128th' | '256th' | '512th' | '1024th'
 
-// Note's view type
+// 音符显示类型
 export type NoteView = 'single' | 'chord' | 'rest'
 
-// Dot's type type
+// 附点类型
 export type DotType = 'dot' | 'doubleDot' | ''
 
-// Slur type type
+// 连音类型
 export type SlurType = 'start' | 'continue' | 'end'
 
-// Tie type type
+// 延长音类型
 export type TieType = 'start' | 'continue' | 'stop'
 
-// Measure XML type
+// 小节XML
 export interface MeasureXML {
   _number?: string
   note?: NoteXML[]
@@ -21,7 +21,7 @@ export interface MeasureXML {
   [propName: string]: any
 }
 
-// Note XML type
+// 音符XML
 export interface NoteXML {
   type: NoteType
   notations?: {
@@ -36,7 +36,7 @@ export interface NoteXML {
   [propName: string]: any
 }
 
-// Harmony XML type
+// 和弦图XML
 export interface HarmonyXML {
   frame: {
     'first-fret': number
@@ -55,7 +55,7 @@ export interface Clef {
   number?: string
 }
 
-// Harmony type
+// 和弦图
 export interface Harmony {
   firstFret: number
   name: string

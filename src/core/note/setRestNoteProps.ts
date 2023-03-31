@@ -1,15 +1,14 @@
-import { NoteXML, Note } from '../../types'
+import { Note, NoteXML } from '../../types'
 import { hasDot } from '../validate'
 
 /**
  * 生成休止符
  */
-export default function createRestNote(id: string, measureId: string, noteXML: NoteXML): Note {
+export default function setRestNoteProps(note: Note, noteXML: NoteXML): Note {
   const { type } = noteXML
 
   return {
-    id,
-    measureId,
+    ...note,
     type,
     view: 'rest',
     dot: hasDot(noteXML)

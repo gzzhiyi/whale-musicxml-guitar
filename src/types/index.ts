@@ -2,7 +2,7 @@
 export type NoteType = 'whole' | 'half' | 'quarter' | 'eighth' | '16th' | '32th' | '64th' | '128th' | '256th' | '512th' | '1024th'
 
 // Note's view type
-export type NoteView = 'single' | 'chord' | 'rest' | 'blank'
+export type NoteView = 'single' | 'chord' | 'rest'
 
 // Dot's type type
 export type DotType = 'dot' | 'doubleDot' | ''
@@ -65,33 +65,31 @@ export interface Harmony {
   }
 }
 
-// Time props type
-export interface TimeProps {
-  start: number // 开始时间（毫秒）
-  duration: number // 持续时间（毫秒）
-}
-
-// Note's Data type
+// 音符数据
 export interface NoteData {
   string: number
   fret: number
 }
 
-// 连音属性类型
+// 时间属性
+export interface TimeProps {
+  start: number // 开始时间（毫秒）
+  duration: number // 持续时间（毫秒）
+}
+
+// 连音属性
 export interface SlurProps {
   type: SlurType
   actualNotes: number
   normalNotes: number
 }
 
-// 延长音属性类型
+// 延长音属性
 export interface TieProps {
-  tie: {
-    type: TieType
-  }
+  type: TieType
 }
 
-// Measure type
+// 小节
 export interface Measure {
   id: string
   partId: string
@@ -102,15 +100,16 @@ export interface Measure {
   time?: TimeProps
 }
 
-// Note type
+// 音符
 export interface Note {
   id: string
-  name?: string
   measureId: string
-  type: NoteType
-  view: NoteView
+  type?: NoteType
+  name?: string // 音符名称（和弦）
+  view?: NoteView // 音符显示类型
   data?: NoteData | NoteData[]
   dot?: DotType
   slur?: SlurProps
+  tie?: TieProps
   time?: TimeProps
 }

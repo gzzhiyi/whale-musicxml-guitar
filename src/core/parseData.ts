@@ -18,14 +18,14 @@ import getBpm from './measure/getBpm'
 import getBeats from './measure/getBeats'
 import getBeatType from './measure/getBeatType'
 import getCapo from './measure/getCapo'
-import createSingleNote from './note/createSingleNote'
-import createChordNote from './note/createChordNote'
-import createRestNote from './note/createRestNote'
 import calNoteDuration from './note/calNoteDuration'
 import setMeasureTimeProps from './measure/setMeasureTimeProps'
 import setNoteTimeProps from './note/setNoteTimeProps'
 import setNoteSlurProps from './note/setNoteSlurProps'
 import setNoteTieProps from './note/setNoteTieProps'
+import setSingleNoteProps from './note/setSingleNoteProps'
+import setChordNoteProps from './note/setChordNoteProps'
+import setRestNoteProps from './note/setRestNoteProps'
 
 interface ReturnData {
   measureList: Measure[]
@@ -75,9 +75,9 @@ export default function parseData(
 
     const measureId: string = `M_${_number}` // 生成小节ID
 
-    if (isEmpty(note)) { // 如果小节没有<note>，则自动添加一个全休止符
-      const id: string = `N_${noteCount}`
-      const node: any = createRestNote(id, measureId, { type: 'whole' })
+    // 如果小节没有<note>，则自动添加一个全休止符
+    if (isEmpty(note)) {
+      const node: Note = { id: `N_${noteCount}`, measureId, type: 'whole', view: 'rest' }
       nList.push(node)
       noteCount++
       return
@@ -100,25 +100,21 @@ export default function parseData(
     let slurType: SlurType = 'start' // 连音类型
 
     notes.map((subItem) => {
-      const id: string = `N_${noteCount}`
-      let node: any = {}
+      let node: Note = { id: `N_${noteCount}`, measureId }
 
       if (isChord(subItem)) { // 和弦
         const index: number = nList.length - 1 // 取最后一个节点元素
         const lastNode: Note = nList[index]
-        const node = createChordNote(subItem, lastNode)
-        nList[index] = {
-          ...lastNode,
-          ...node
-        }
+        const node: Note = setChordNoteProps(lastNode, subItem)
+        nList[index] = node
       } else if (isRest(subItem)) { // 休止符
-        node = createRestNote(id, measureId, subItem)
+        node = setRestNoteProps(node, subItem)
       } else if (isTabNote(subItem)) { // 单音符
-        node = createSingleNote(id, measureId, subItem)
+        node = setSingleNoteProps(node, subItem)
       }
 
-      if (hasTie(subItem)) { // 延音线
-        node = setNoteTieProps(subItem)
+      if (hasTie(subItem)) { // 延长音
+        node = setNoteTieProps(node, subItem)
       }
 
       if (hasSlur(subItem)) { // 连音
@@ -135,10 +131,7 @@ export default function parseData(
           slurMerged = 0
         }
 
-        node = {
-          ...node,
-          slur: setNoteSlurProps(subItem, slurType) // 添加延长音属性
-        }
+        node = setNoteSlurProps(node, subItem, slurType) // 添加延长音属性
       }
 
       if (isEmpty(node)) { // 异常处理

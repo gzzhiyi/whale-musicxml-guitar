@@ -89,6 +89,16 @@ export interface TieProps {
   type: TieType
 }
 
+// 坐标属性
+export interface CoordsProps {
+  x: number
+}
+
+// 尺寸属性
+export interface SizeProps {
+  width: number
+}
+
 // 小节
 export interface Measure {
   id: string
@@ -98,6 +108,7 @@ export interface Measure {
   beatType: number
   capo: number
   time?: TimeProps
+  size?: SizeProps
 }
 
 // 音符
@@ -112,4 +123,6 @@ export interface Note {
   slur?: SlurProps
   tie?: TieProps
   time?: TimeProps
+  coord?: CoordsProps
+  size?: SizeProps
 }

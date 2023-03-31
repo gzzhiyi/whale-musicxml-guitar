@@ -19,10 +19,14 @@ import getBeats from './measure/getBeats'
 import getBeatType from './measure/getBeatType'
 import getCapo from './measure/getCapo'
 import calNoteDuration from './note/calNoteDuration'
+import calNoteWidth from './note/calNoteWidth'
 import setMeasureTimeProps from './measure/setMeasureTimeProps'
+import setMeasureSizeProps from './measure/setMeasureSizeProps'
 import setNoteTimeProps from './note/setNoteTimeProps'
 import setNoteSlurProps from './note/setNoteSlurProps'
 import setNoteTieProps from './note/setNoteTieProps'
+import setNoteCoordProps from './note/setNoteCoordProps'
+import setNoteSizeProps from './note/setNoteSizeProps'
 import setSingleNoteProps from './note/setSingleNoteProps'
 import setChordNoteProps from './note/setChordNoteProps'
 import setRestNoteProps from './note/setRestNoteProps'
@@ -30,6 +34,8 @@ import setRestNoteProps from './note/setRestNoteProps'
 interface ReturnData {
   measureList: Measure[]
   noteList: Note[]
+  totalWidth: number
+  totalDuration: number
 }
 
 /**
@@ -38,8 +44,9 @@ interface ReturnData {
 export default function parseData(
   measureXML: MeasureXML[] = [],
   clef: Clef = {},
-  speed: number = 1,
-  bpmUnit: NoteType
+  speed: number,
+  bpmUnit: NoteType,
+  minWidth: number
 ): ReturnData {
   const mList: Measure[] = []
   const nList: Note[] = []
@@ -50,8 +57,9 @@ export default function parseData(
   let globalCapo: number = 0
 
   let noteCount: number = 1 // 音符数量累计
-  let timeAddUp: number = 0 // 时间累计
-  let mStartTime: number = 0 // 小节开始时间
+
+  let totalWidth: number = 0 // 总宽度
+  let totalDuration: number = 0 // 总时长
 
   measureXML.map((measure: MeasureXML) => {
     if (isEmpty(measure)) {
@@ -73,11 +81,14 @@ export default function parseData(
     globalBeatType = beatType
     globalCapo = capo
 
-    const measureId: string = `M_${_number}` // 生成小节ID
+    let mWidth: number = 0 // 小节宽度
+    let mDuration: number = 0 // 小节时长
+
+    const mId: string = `M_${_number}` // 生成小节ID
 
     // 如果小节没有<note>，则自动添加一个全休止符
     if (isEmpty(note)) {
-      const node: Note = { id: `N_${noteCount}`, measureId, type: 'whole', view: 'rest' }
+      const node: Note = { id: `N_${noteCount}`, measureId: mId, type: 'whole', view: 'rest' }
       nList.push(node)
       noteCount++
       return
@@ -100,7 +111,7 @@ export default function parseData(
     let slurType: SlurType = 'start' // 连音类型
 
     notes.map((subItem) => {
-      let node: Note = { id: `N_${noteCount}`, measureId }
+      let node: Note = { id: `N_${noteCount}`, measureId: mId }
 
       if (isChord(subItem)) { // 和弦
         const index: number = nList.length - 1 // 取最后一个节点元素
@@ -141,8 +152,18 @@ export default function parseData(
 
       // 设置音符时间属性
       const duration = calNoteDuration(node, bpm, bpmUnit)
-      timeAddUp += duration
-      node = setNoteTimeProps(node, timeAddUp, duration)
+      node = setNoteTimeProps(node, mDuration, duration)
+      mDuration += duration // 累计小节时长
+
+      // 设置音符坐标属性
+      node = setNoteCoordProps(node, mWidth)
+
+      // 设置音符尺寸属性
+      const width = calNoteWidth(node, minWidth)
+      node = setNoteSizeProps(node, width)
+
+      mWidth += width
+      totalWidth += width
 
       // 添加到音符列表
       nList.push(node)
@@ -151,21 +172,24 @@ export default function parseData(
 
     // 添加到小节列表
     let m: Measure = {
-      id: measureId,
+      id: mId,
       partId,
       bpm,
       beats,
       beatType,
       capo
     }
-    m = setMeasureTimeProps(m, mStartTime, timeAddUp) // 设置小节时间属性
-    mList.push(m)
 
-    mStartTime += timeAddUp
+    m = setMeasureTimeProps(m, totalDuration, mDuration) // 设置小节时间属性
+    m = setMeasureSizeProps(m, mWidth) // 设置小节尺寸属性
+    mList.push(m)
+    totalDuration += mDuration // 总时长
   })
 
   return {
     measureList: mList,
-    noteList: nList
+    noteList: nList,
+    totalWidth,
+    totalDuration
   }
 }

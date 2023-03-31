@@ -1,5 +1,5 @@
 import { XMLValidator } from 'fast-xml-parser'
-import { NoteType } from './types'
+import { Harmony, Measure, Note, NoteType } from './types'
 import findAllParts from './core/score/findAllParts'
 import findAllMeasures from './core/score/findAllMeasures'
 import findAllHarmonies from './core/score/findAllHarmonies'
@@ -12,10 +12,11 @@ import parseData from './core/parseData'
 
 // Option's props type
 interface OptionProps {
-  debug?: boolean
   bpm?: number
   bpmUnit?: NoteType
+  debug?: boolean
   speed?: number
+  minWidth?: number
 }
 
 /**
@@ -29,13 +30,16 @@ export class SMGuitar {
   public scoreType: string = '' // 曲谱类型
   public clef: any // 谱号
   public tuningStep: any // 标准调弦
-  public harmonies: any // 和弦图
-  public measures: any // 小节
-  public notes: any // 音符
+  public harmonies: Harmony[] = [] // 和弦图
+  public measures: Measure[] = [] // 小节
+  public notes: Note[] = [] // 音符
+  public totalWidth: number = 0
+  public totalDuration: number = 0
 
   private _speed: number = 1 // 速度
   private _bpmUnit: NoteType = 'quarter' // BPM单位
   private _debug: boolean = false // 调试模式
+  private _minWidth: number = 10 // 音符最小宽度（最小支持到64分音符）
 
   private _oriXml: any
   private _oriParts: any
@@ -75,9 +79,11 @@ export class SMGuitar {
     this.tuningStep = getTuningStep(this._oriMeasures)
     this.harmonies = getHarmonies(this._oriHarmonies)
 
-    const { measureList, noteList } = parseData(this._oriMeasures, this.clef, this._speed, this._bpmUnit)
+    const { measureList, noteList, totalWidth, totalDuration } = parseData(this._oriMeasures, this.clef, this._speed, this._bpmUnit, this._minWidth)
     this.measures = measureList
     this.notes = noteList
+    this.totalWidth = totalWidth
+    this.totalDuration = totalDuration
 
     // Logs
     this._debug && console.log(this)

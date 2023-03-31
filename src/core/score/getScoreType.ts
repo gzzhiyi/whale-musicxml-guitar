@@ -1,7 +1,6 @@
 import { isEmpty } from 'lodash'
-import { ScoreType } from '../../types'
 
-export default function getScoreType(xml: any): ScoreType {
+export default function getScoreType(xml: any): string {
   if (!isEmpty(xml['score-partwise'])) {
     return 'partwise'
   }

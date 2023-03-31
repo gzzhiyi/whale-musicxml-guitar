@@ -1,5 +1,5 @@
+import { isArray, isObject } from 'lodash'
 import { HarmonyXML, Harmony } from '../../types'
-import formatNoteData from '../note/formatNoteData'
 import getChordName from '../note/getChordName'
 
 /**
@@ -27,6 +27,31 @@ function uniq(arr: any) {
 }
 
 /**
+ * 格式化数据
+ */
+function formatData(noteXML: any): any {
+  if (isArray(noteXML)) {
+    const arr: any = []
+
+    noteXML.map((item: any = {}) => {
+      const { string, fret } = item
+      arr.push({ string, fret })
+    })
+
+    return arr
+  }
+
+  if (isObject(noteXML)) {
+    const o: any = noteXML
+    const { string, fret } = o
+
+    return { string, fret }
+  }
+
+  return []
+}
+
+/**
  * 每个小节有几个拍
  */
 export default function getHarmonies(harmonyXML: HarmonyXML[]): Harmony[] {
@@ -34,7 +59,7 @@ export default function getHarmonies(harmonyXML: HarmonyXML[]): Harmony[] {
 
   harmonyXML.map((item) => {
     const { frame, measureId } = item
-    const notes = formatNoteData(frame['frame-note'])
+    const notes = formatData(frame['frame-note'])
 
     arr.push({
       measureId,

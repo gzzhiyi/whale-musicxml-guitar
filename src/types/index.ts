@@ -4,31 +4,40 @@ export type NoteType = 'whole' | 'half' | 'quarter' | 'eighth' | '16th' | '32th'
 // Note's view type
 export type NoteView = 'single' | 'chord' | 'rest' | 'blank'
 
-// Score's type type
-export type ScoreType = 'partwise' | 'timewise' | ''
-
 // Dot's type type
 export type DotType = 'dot' | 'doubleDot' | ''
 
 // Slur type type
 export type SlurType = 'start' | 'continue' | 'end'
 
+// Tie type type
+export type TieType = 'start' | 'continue' | 'stop'
+
 // Measure XML type
 export interface MeasureXML {
-  id: string
-  partId: string
-  bpm: number
-  beats: number
-  beatType: number
-  capo: number
-  harmony?: any
   _number?: string
+  note?: NoteXML[]
+  harmony?: HarmonyXML | HarmonyXML[]
   [propName: string]: any
 }
 
-// Harmony XML Type
+// Note XML type
+export interface NoteXML {
+  type: NoteType
+  notations?: {
+    technical: {
+      fret: number
+      string: number
+    }
+    tied?: {
+      _type: TieType
+    }
+  }
+  [propName: string]: any
+}
+
+// Harmony XML type
 export interface HarmonyXML {
-  measureId
   frame: {
     'first-fret': number
     'frame-note': {
@@ -36,6 +45,7 @@ export interface HarmonyXML {
       fret: number
     }
   }
+  [propName: string]: any
 }
 
 // Clef type
@@ -45,31 +55,51 @@ export interface Clef {
   number?: string
 }
 
-// Harmony Type
+// Harmony type
 export interface Harmony {
   firstFret: number
   name: string
   data: {
     string: number
     fret: number
-    step: string
-    octave: string
   }
 }
 
-// Slur note type
-export interface SlurNote {
+// Time props type
+export interface TimeProps {
+  start: number // 开始时间（毫秒）
+  duration: number // 持续时间（毫秒）
+}
+
+// Note's Data type
+export interface NoteData {
+  string: number
+  fret: number
+}
+
+// 连音属性类型
+export interface SlurProps {
   type: SlurType
   actualNotes: number
   normalNotes: number
 }
 
-// Note's Data yype
-export interface NoteData {
-  string: number
-  fret: number
-  step: string
-  octave: number
+// 延长音属性类型
+export interface TieProps {
+  tie: {
+    type: TieType
+  }
+}
+
+// Measure type
+export interface Measure {
+  id: string
+  partId: string
+  bpm: number
+  beats: number
+  beatType: number
+  capo: number
+  time?: TimeProps
 }
 
 // Note type
@@ -79,16 +109,8 @@ export interface Note {
   measureId: string
   type: NoteType
   view: NoteView
-  data: any
+  data?: NoteData | NoteData[]
   dot?: DotType
-  slur?: SlurNote
-}
-
-// Time type
-export interface Time {
-  noteId: string
-  measureId: string
-  duration: number
-  startTime: number
-  endTime: number
+  slur?: SlurProps
+  time?: TimeProps
 }

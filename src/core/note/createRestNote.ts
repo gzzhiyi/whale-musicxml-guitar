@@ -1,10 +1,10 @@
-import { Note } from '../../types'
+import { NoteXML, Note } from '../../types'
 import { hasDot } from '../validate'
 
 /**
  * 生成休止符
  */
-export default function createRestNote(id: string, measureId: string, noteXML: any): Note {
+export default function createRestNote(id: string, measureId: string, noteXML: NoteXML): Note {
   const { type } = noteXML
 
   return {
@@ -12,7 +12,6 @@ export default function createRestNote(id: string, measureId: string, noteXML: a
     measureId,
     type,
     view: 'rest',
-    data: null,
     dot: hasDot(noteXML)
   }
 }

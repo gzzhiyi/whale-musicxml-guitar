@@ -1,5 +1,5 @@
 import { XMLValidator } from 'fast-xml-parser'
-import { NoteType, ScoreType } from './types'
+import { NoteType } from './types'
 import findAllParts from './core/score/findAllParts'
 import findAllMeasures from './core/score/findAllMeasures'
 import findAllHarmonies from './core/score/findAllHarmonies'
@@ -7,8 +7,6 @@ import getScoreType from './core/score/getScoreType'
 import getClef from './core/score/getClef'
 import getTuningStep from './core/score/getTuningStep'
 import getHarmonies from './core/score/getHarmonies'
-import noteTypeToNumberFn from './core/note/noteTypeToNumber'
-import numberToNoteTypeFn from './core/note/numberToNoteType'
 import parseToJson from './core/parseToJson'
 import parseData from './core/parseData'
 
@@ -28,16 +26,15 @@ interface OptionProps {
 export class SMGuitar {
   public xmlVersion: string = '' // XML版本
   public scoreVersion: string = '' // 曲谱版本
-  public scoreType: ScoreType = '' // 曲谱类型
+  public scoreType: string = '' // 曲谱类型
   public clef: any // 谱号
   public tuningStep: any // 标准调弦
   public harmonies: any // 和弦图
   public measures: any // 小节
   public notes: any // 音符
 
-  private _bpm: number = 0 // BPM
-  private _bpmUnit: NoteType = 'quarter' // BPM单位
   private _speed: number = 1 // 速度
+  private _bpmUnit: NoteType = 'quarter' // BPM单位
   private _debug: boolean = false // 调试模式
 
   private _oriXml: any
@@ -53,19 +50,15 @@ export class SMGuitar {
 
     // Options
     if (option?.debug) {
-      this._debug = option?.debug
-    }
-
-    if (option?.bpm) {
-      this._bpm = option?.bpm
-    }
-
-    if (option?.bpmUnit) {
-      this._bpmUnit = option?.bpmUnit
+      this._debug = option.debug
     }
 
     if (option?.speed) {
-      this._speed = option?.speed
+      this._speed = option.speed
+    }
+
+    if (option?.bpmUnit) {
+      this._bpmUnit = option.bpmUnit
     }
 
     // Original datas
@@ -82,7 +75,7 @@ export class SMGuitar {
     this.tuningStep = getTuningStep(this._oriMeasures)
     this.harmonies = getHarmonies(this._oriHarmonies)
 
-    const { measureList, noteList } = parseData(this._oriMeasures, this.clef, this._bpm, this._bpmUnit, this._speed)
+    const { measureList, noteList } = parseData(this._oriMeasures, this.clef, this._speed, this._bpmUnit)
     this.measures = measureList
     this.notes = noteList
 
@@ -98,6 +91,3 @@ export class SMGuitar {
 
   getChordName(): any {}
 }
-
-export const noteTypeToNumber = noteTypeToNumberFn
-export const numberToNoteType = numberToNoteTypeFn

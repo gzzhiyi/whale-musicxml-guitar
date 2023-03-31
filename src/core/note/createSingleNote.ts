@@ -1,13 +1,12 @@
-import { Note } from '../../types'
+import { NoteXML, Note } from '../../types'
 import { hasDot } from '../validate'
 
 /**
  * 生成单音符
  */
-export default function createSingleNote(id: string, measureId: string, noteXML: any): Note {
-  const { type, notations, pitch } = noteXML
-  const { fret, string } = notations.technical || {}
-  const { step, octave, alter } = pitch
+export default function createSingleNote(id: string, measureId: string, noteXML: NoteXML): Note {
+  const { type, notations } = noteXML
+  const { fret, string } = notations?.technical || {}
 
   return {
     id,
@@ -15,11 +14,9 @@ export default function createSingleNote(id: string, measureId: string, noteXML:
     type,
     view: 'single',
     data: {
-      string, // MusicXML的string是从1开始
-      fret,
-      step: alter ? `${step}#` : step,
-      octave
-    },
+      string: string || 0 ,
+      fret: fret || 0
+    }, // MusicXML的string是从1开始
     dot: hasDot(noteXML)
   }
 }

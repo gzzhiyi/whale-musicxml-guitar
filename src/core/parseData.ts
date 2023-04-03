@@ -106,6 +106,7 @@ export default function parseData(
       notes = filter(notes, { staff: Number(clef.number) })
     }
 
+    // 连音
     let slurTotal = 0 // 需合并数量
     let slurMerged = 0 // 已合并数量
     let slurType: SlurType = 'start' // 连音类型

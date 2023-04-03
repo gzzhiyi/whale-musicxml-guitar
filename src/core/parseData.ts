@@ -1,4 +1,9 @@
-import { filter, isArray, isEmpty } from 'lodash'
+import {
+  filter,
+  isArray,
+  isEmpty,
+  isObject
+} from 'lodash'
 import {
   MeasureXML,
   Measure,
@@ -86,20 +91,14 @@ export default function parseData(
 
     const mId: string = `M_${_number}` // 生成小节ID
 
-    // 如果小节没有<note>，则自动添加一个全休止符
-    if (isEmpty(note)) {
-      const node: Note = { id: `N_${noteCount}`, measureId: mId, type: 'whole', view: 'rest' }
-      nList.push(node)
-      noteCount++
-      return
-    }
-
     let notes: any = []
 
-    if (!isArray(note)) {
-      notes = [note]
-    } else {
+    if (isEmpty(note)) {
+      notes = []
+    } else if (isArray(note)) {
       notes = note
+    } else if (isObject(note)) {
+      notes = [note]
     }
 
     if (clef.number) { // 如果元数据存在多种曲谱类型，则根据当前类型做筛选处理
@@ -110,6 +109,8 @@ export default function parseData(
     let slurTotal = 0 // 需合并数量
     let slurMerged = 0 // 已合并数量
     let slurType: SlurType = 'start' // 连音类型
+
+    // console.log(notes)
 
     notes.map((subItem) => {
       let node: Note = { id: `N_${noteCount}`, measureId: mId }
@@ -147,7 +148,7 @@ export default function parseData(
         node = setNoteSlurProps(node, subItem, slurType) // 添加延长音属性
       }
 
-      if (isEmpty(node)) { // 异常处理
+      if (isEmpty(node)) { // 异常
         return
       }
 
@@ -170,6 +171,27 @@ export default function parseData(
       nList.push(node)
       noteCount++
     })
+
+    // 如果小节没有<note>，则自动补上一个全休止符
+    // if (isEmpty(nList)) {
+    //   console.log(999)
+    //   //   let node: Note = { id: `N_${noteCount}`, measureId: mId, type: 'whole', view: 'rest' }
+
+    //   //   const duration = calNoteDuration(node, bpm, bpmUnit)
+    //   //   node = setNoteTimeProps(node, mDuration, duration)
+
+    //   //   node = setNoteCoordProps(node, mWidth)
+
+    //   //   const width = calNoteWidth(node, minWidth)
+    //   //   node = setNoteSizeProps(node, width)
+
+    //   //   mWidth += width
+    //   //   totalWidth += width
+
+    //   //   nList.push(node)
+    //   //   noteCount++
+    //   //   return
+    // }
 
     // 添加到小节列表
     let m: Measure = {

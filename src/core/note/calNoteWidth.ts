@@ -1,6 +1,6 @@
 import { Note } from '../../types'
 
-const map = {
+const NoteMap = {
   'whole': 64,
   'half': 32,
   'quarter': 16,
@@ -24,7 +24,7 @@ export default function calNoteWidth(note: Note, beats: number, beatType: number
   if (view === 'rest' && type === 'whole') { // 全休止符处理
     width = beats * beatType * widthUnit
   } else {
-    width = widthUnit * map[type]
+    width = widthUnit * NoteMap[type]
   }
 
   switch(dot) {

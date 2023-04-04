@@ -1,8 +1,4 @@
-import {
-  isArray,
-  isEmpty,
-  isObject
-} from 'lodash'
+import { isArray, isEmpty, isObject } from 'lodash'
 import {
   MeasureXML,
   Measure,
@@ -103,6 +99,28 @@ export default function parseData(
     let slurMerged = 0 // 已合并数量
     let slurType: SlurType = 'start' // 连音类型
 
+    // 操作下一个音符
+    const _toNext = (node) => {
+      // 设置音符时间属性
+      const duration = calNoteDuration(node, beats, beatType, bpm, bpmUnit)
+      node = setNoteTimeProps(node, mDuration, duration)
+      mDuration += duration // 累计小节时长
+
+      // 设置音符坐标属性
+      node = setNoteCoordProps(node, mWidth)
+
+      // 设置音符尺寸属性
+      const width = calNoteWidth(node, beats, beatType, minWidth)
+      node = setNoteSizeProps(node, width)
+
+      mWidth += width
+      totalWidth += width
+
+      // 添加到音符列表
+      nList.push(node)
+      noteCount++
+    }
+
     notes.map((subItem) => {
       let node: Note = { id: `N_${noteCount}`, measureId: mId }
 
@@ -143,48 +161,13 @@ export default function parseData(
         return
       }
 
-      // 设置音符时间属性
-      const duration = calNoteDuration(node, beats, beatType, bpm, bpmUnit)
-      node = setNoteTimeProps(node, mDuration, duration)
-      mDuration += duration // 累计小节时长
-
-      // 设置音符坐标属性
-      node = setNoteCoordProps(node, mWidth)
-
-      // 设置音符尺寸属性
-      const width = calNoteWidth(node, beats, beatType, minWidth)
-      node = setNoteSizeProps(node, width)
-
-      mWidth += width
-      totalWidth += width
-
-      // 添加到音符列表
-      nList.push(node)
-      noteCount++
+      _toNext(node)
     })
 
     // 如果小节没有<note>，则自动补上一个全休止符
     if (isEmpty(nList)) {
-      let node: Note = { id: `N_${noteCount}`, measureId: mId, type: 'whole', view: 'rest' }
-
-      // 设置音符时间属性
-      const duration = calNoteDuration(node, beats, beatType, bpm, bpmUnit)
-      node = setNoteTimeProps(node, mDuration, duration)
-      mDuration += duration // 累计小节时长
-
-      // 设置音符坐标属性
-      node = setNoteCoordProps(node, mWidth)
-
-      // 设置音符尺寸属性
-      const width = calNoteWidth(node, beats, beatType, minWidth)
-      node = setNoteSizeProps(node, width)
-
-      mWidth += width
-      totalWidth += width
-
-      // 添加到音符列表
-      nList.push(node)
-      noteCount++
+      const node: Note = { id: `N_${noteCount}`, measureId: mId, type: 'whole', view: 'rest' }
+      _toNext(node)
     }
 
     // 添加到小节列表

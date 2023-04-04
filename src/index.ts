@@ -79,7 +79,7 @@ export class SMGuitar {
     this.tuningStep = getTuningStep(this._oriMeasures)
     this.harmonies = getHarmonies(this._oriHarmonies)
 
-    const { measureList, noteList, totalWidth, totalDuration } = parseData(this._oriMeasures, this.clef, this._speed, this._bpmUnit, this._minWidth)
+    const { measureList, noteList, totalWidth, totalDuration } = parseData(this._oriMeasures, this._speed, this._bpmUnit, this._minWidth)
     this.measures = measureList
     this.notes = noteList
     this.totalWidth = totalWidth

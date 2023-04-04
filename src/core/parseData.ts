@@ -1,5 +1,4 @@
 import {
-  filter,
   isArray,
   isEmpty,
   isObject
@@ -7,7 +6,6 @@ import {
 import {
   MeasureXML,
   Measure,
-  Clef,
   Note,
   NoteType,
   SlurType
@@ -48,7 +46,6 @@ interface ReturnData {
  */
 export default function parseData(
   measureXML: MeasureXML[] = [],
-  clef: Clef = {},
   speed: number,
   bpmUnit: NoteType,
   minWidth: number
@@ -101,16 +98,10 @@ export default function parseData(
       notes = [note]
     }
 
-    if (clef.number) { // 如果元数据存在多种曲谱类型，则根据当前类型做筛选处理
-      notes = filter(notes, { staff: Number(clef.number) })
-    }
-
     // 连音
     let slurTotal = 0 // 需合并数量
     let slurMerged = 0 // 已合并数量
     let slurType: SlurType = 'start' // 连音类型
-
-    // console.log(notes)
 
     notes.map((subItem) => {
       let node: Note = { id: `N_${noteCount}`, measureId: mId }
@@ -153,7 +144,7 @@ export default function parseData(
       }
 
       // 设置音符时间属性
-      const duration = calNoteDuration(node, bpm, bpmUnit)
+      const duration = calNoteDuration(node, beats, beatType, bpm, bpmUnit)
       node = setNoteTimeProps(node, mDuration, duration)
       mDuration += duration // 累计小节时长
 
@@ -161,7 +152,7 @@ export default function parseData(
       node = setNoteCoordProps(node, mWidth)
 
       // 设置音符尺寸属性
-      const width = calNoteWidth(node, minWidth)
+      const width = calNoteWidth(node, beats, beatType, minWidth)
       node = setNoteSizeProps(node, width)
 
       mWidth += width
@@ -173,25 +164,28 @@ export default function parseData(
     })
 
     // 如果小节没有<note>，则自动补上一个全休止符
-    // if (isEmpty(nList)) {
-    //   console.log(999)
-    //   //   let node: Note = { id: `N_${noteCount}`, measureId: mId, type: 'whole', view: 'rest' }
+    if (isEmpty(nList)) {
+      let node: Note = { id: `N_${noteCount}`, measureId: mId, type: 'whole', view: 'rest' }
 
-    //   //   const duration = calNoteDuration(node, bpm, bpmUnit)
-    //   //   node = setNoteTimeProps(node, mDuration, duration)
+      // 设置音符时间属性
+      const duration = calNoteDuration(node, beats, beatType, bpm, bpmUnit)
+      node = setNoteTimeProps(node, mDuration, duration)
+      mDuration += duration // 累计小节时长
 
-    //   //   node = setNoteCoordProps(node, mWidth)
+      // 设置音符坐标属性
+      node = setNoteCoordProps(node, mWidth)
 
-    //   //   const width = calNoteWidth(node, minWidth)
-    //   //   node = setNoteSizeProps(node, width)
+      // 设置音符尺寸属性
+      const width = calNoteWidth(node, beats, beatType, minWidth)
+      node = setNoteSizeProps(node, width)
 
-    //   //   mWidth += width
-    //   //   totalWidth += width
+      mWidth += width
+      totalWidth += width
 
-    //   //   nList.push(node)
-    //   //   noteCount++
-    //   //   return
-    // }
+      // 添加到音符列表
+      nList.push(node)
+      noteCount++
+    }
 
     // 添加到小节列表
     let m: Measure = {

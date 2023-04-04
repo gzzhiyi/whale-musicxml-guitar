@@ -1,26 +1,31 @@
 import { Note } from '../../types'
 
+const map = {
+  'whole': 64,
+  'half': 32,
+  'quarter': 16,
+  'eighth': 8,
+  '16th': 4,
+  '32th': 2,
+  '64th': 1
+}
+
 /**
  * 计算音符坐标
  */
-export default function calNoteWidth(note: Note, minWidth: number): number {
-  if (!note.type) {
+export default function calNoteWidth(note: Note, beats: number, beatType: number, widthUnit: number): number {
+  const { view, type, dot } = note
+
+  if (!type) {
     return 0
   }
 
-  const map = {
-    'whole': minWidth * 64,
-    'half': minWidth * 32,
-    'quarter': minWidth * 16,
-    'eighth': minWidth * 8,
-    '16th': minWidth * 4,
-    '32th': minWidth * 2,
-    '64th': minWidth
+  let width = 0
+  if (view === 'rest' && type === 'whole') { // 全休止符处理
+    width = beats * beatType * widthUnit
+  } else {
+    width = widthUnit * map[type]
   }
-
-  const { type, dot } = note
-
-  let width = map[type]
 
   switch(dot) {
   case 'dot':

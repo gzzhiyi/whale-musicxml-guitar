@@ -1,16 +1,25 @@
 import { isEmpty } from 'lodash'
-import { NoteType } from '../../types'
+import { Note, NoteType } from '../../types'
 import noteTypeToNumber from './noteTypeToNumber'
 
 /**
  * 计算音符时长
  */
-export default function calNoteDuration(node, bpm: number, bpmUnit: NoteType) {
-  const { type, slur, dot } = node
+export default function calNoteDuration(note: Note, beats: number, beatType: number, bpm: number, bpmUnit: NoteType): number {
+  const { view, type, slur, dot } = note
 
-  const unit: number = noteTypeToNumber(bpmUnit) // 自定义BPM单位
+  if (!type) {
+    return 0
+  }
 
-  let duration = Math.floor(60 / bpm * (unit / noteTypeToNumber(type)) * 1000)
+  const beatTime = Math.floor(60 / bpm / (beatType / noteTypeToNumber(bpmUnit)) * 1000) // 计算一节拍时值
+
+  let duration = 0
+  if (view === 'rest' && type === 'whole') { // 全休止符处理
+    duration = beatTime * beats
+  } else {
+    duration = (beatType / noteTypeToNumber(type)) * beatTime
+  }
 
   if (!isEmpty(slur)) { // 连音
     const { actualNotes, normalNotes, type } = slur

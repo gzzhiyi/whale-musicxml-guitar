@@ -1,5 +1,11 @@
 import { XMLValidator } from 'fast-xml-parser'
-import { Harmony, Measure, Note, NoteType } from './types'
+import { find } from 'lodash'
+import {
+  Harmony,
+  Measure,
+  Note,
+  NoteType
+} from './types'
 import findAllParts from './core/score/findAllParts'
 import findAllMeasures from './core/score/findAllMeasures'
 import findAllHarmonies from './core/score/findAllHarmonies'
@@ -9,6 +15,9 @@ import getTuningStep from './core/score/getTuningStep'
 import getHarmonies from './core/score/getHarmonies'
 import parseToJson from './core/parseToJson'
 import parseData from './core/parseData'
+import getChordName from './core/note/getChordName'
+import noteTypeToNumber from './core/note/noteTypeToNumber'
+import numberToNoteType from './core/note/numberToNoteType'
 
 // Option's props type
 interface OptionProps {
@@ -89,11 +98,23 @@ export class SMGuitar {
     this._debug && console.log(this)
   }
 
-  getScoreDuration(): any {}
+  getChordName(data: any): string {
+    return getChordName(data)
+  }
 
-  getMeasureDuration(): any {}
+  getMeasureById(id: string): Measure | undefined {
+    return find(this.measures, { id })
+  }
 
-  getNoteDuration(): any {}
+  getNoteById(id: string): Note | undefined {
+    return find(this.notes, { id })
+  }
 
-  getChordName(): any {}
+  numberToType(num: number): NoteType {
+    return numberToNoteType(num)
+  }
+
+  typeToNumber(type: NoteType): number {
+    return noteTypeToNumber(type)
+  }
 }

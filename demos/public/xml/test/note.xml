@@ -3,9 +3,9 @@
 <score-partwise version="2.0">
  <identification>
   <encoding>
-   <encoding-date>2023-04-03</encoding-date>
-   <software>Guitar Pro 8.0.1</software>
-   <supports value="yes" type="yes" element="print" attribute="new-system"/>
+   <encoding-date>2023-02-21</encoding-date>
+   <software>Guitar Pro 8.0.2</software>
+   <supports attribute="new-system" type="yes" value="yes" element="print"/>
   </encoding>
  </identification>
  <defaults>
@@ -35,7 +35,7 @@
   <measure number="1">
    <print new-system="yes"/>
    <attributes>
-    <divisions>1</divisions>
+    <divisions>2</divisions>
     <key>
      <fifths>0</fifths>
      <mode>major</mode>
@@ -76,12 +76,61 @@
      </staff-tuning>
     </staff-details>
    </attributes>
+   <direction directive="yes">
+    <direction-type>
+     <metronome parentheses="no" default-y="40">
+      <beat-unit>quarter</beat-unit>
+      <per-minute>30</per-minute>
+     </metronome>
+    </direction-type>
+    <sound tempo="30"/>
+   </direction>
+   <direction>
+    <direction-type>
+     <dynamics>
+      <mf/>
+     </dynamics>
+    </direction-type>
+   </direction>
+   <note>
+    <rest/>
+    <duration>1</duration>
+    <voice>1</voice>
+    <type>eighth</type>
+   </note>
+   <note>
+    <rest/>
+    <duration>1</duration>
+    <voice>1</voice>
+    <type>eighth</type>
+   </note>
+   <note>
+    <rest/>
+    <duration>1</duration>
+    <voice>1</voice>
+    <type>eighth</type>
+   </note>
+   <note>
+    <rest/>
+    <duration>1</duration>
+    <voice>1</voice>
+    <type>eighth</type>
+   </note>
+   <note>
+    <rest/>
+    <duration>1</duration>
+    <voice>1</voice>
+    <type>eighth</type>
+   </note>
+   <note>
+    <rest/>
+    <duration>1</duration>
+    <voice>1</voice>
+    <type>eighth</type>
+   </note>
   </measure>
   <measure number="2">
    <print new-system="yes"/>
-   <attributes>
-    <divisions>2</divisions>
-   </attributes>
    <direction>
     <direction-type>
      <dynamics>

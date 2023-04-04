@@ -21,7 +21,7 @@ export default function App() {
   }
 
   useEffect(async() => {
-    const xmlDoc = await getXMLData('/xml/test/blank.xml')
+    const xmlDoc = await getXMLData('/xml/test/note.xml')
     new SMGuitar(xmlDoc, { debug: true })
   }, [])
 

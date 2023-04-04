@@ -1,6 +1,5 @@
 import { isArray, isObject } from 'lodash'
 import { Note, NoteData, NoteXML } from '../../types'
-import { hasDot } from '../validate'
 import getChordName from './getChordName'
 
 /**
@@ -32,7 +31,6 @@ export default function setChordNoteProps(note: Note, noteXML: NoteXML): Note {
   return {
     ...note,
     view: 'chord',
-    data,
-    dot: note.dot || hasDot(noteXML)
+    data
   }
 }

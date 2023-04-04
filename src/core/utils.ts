@@ -1,4 +1,4 @@
-import { DotType } from '../types'
+import { DotType, BeamType } from '../types'
 import { isArray, isEmpty, has } from 'lodash'
 
 /**
@@ -39,9 +39,9 @@ export function hasSlur(noteXML): boolean {
 }
 
 /**
- * 是否附点
+ * 获取附点
  */
-export function hasDot(noteXML): DotType {
+export function getDot(noteXML): DotType {
   if (!has(noteXML, 'dot')) {
     return ''
   }
@@ -51,4 +51,15 @@ export function hasDot(noteXML): DotType {
   }
 
   return 'dot'
+}
+
+/**
+ * 获取时值横杆属性
+ */
+export function getBeam(noteXML): BeamType {
+  if (!has(noteXML, 'beam')) {
+    return ''
+  }
+
+  return noteXML.beam['#text']
 }

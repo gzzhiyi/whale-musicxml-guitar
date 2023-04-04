@@ -7,6 +7,9 @@ export type NoteView = 'single' | 'chord' | 'rest'
 // 附点类型
 export type DotType = 'dot' | 'doubleDot' | ''
 
+// 时值横杆类型
+export type BeamType = 'begin' | 'continue' | 'end' | ''
+
 // 连音类型
 export type SlurType = 'start' | 'continue' | 'end'
 
@@ -125,4 +128,5 @@ export interface Note {
   time?: TimeProps
   coord?: CoordsProps
   size?: SizeProps
+  beam?: BeamType
 }

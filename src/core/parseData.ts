@@ -11,8 +11,10 @@ import {
   isRest,
   isChord,
   hasTie,
-  hasSlur
-} from './validate'
+  hasSlur,
+  getDot,
+  getBeam
+} from './utils'
 import getBpm from './measure/getBpm'
 import getBeats from './measure/getBeats'
 import getBeatType from './measure/getBeatType'
@@ -26,6 +28,8 @@ import setNoteSlurProps from './note/setNoteSlurProps'
 import setNoteTieProps from './note/setNoteTieProps'
 import setNoteCoordProps from './note/setNoteCoordProps'
 import setNoteSizeProps from './note/setNoteSizeProps'
+import setNoteDotProps from './note/setNoteDotProps'
+import setNoteBeamProps from './note/setNoteBeamProps'
 import setSingleNoteProps from './note/setSingleNoteProps'
 import setChordNoteProps from './note/setChordNoteProps'
 import setRestNoteProps from './note/setRestNoteProps'
@@ -136,11 +140,13 @@ export default function parseData(
         node = setSingleNoteProps(node, subItem)
       }
 
-      if (hasTie(subItem)) { // 延长音
+      // 延长音
+      if (hasTie(subItem)) {
         node = setNoteTieProps(node, subItem)
       }
 
-      if (hasSlur(subItem)) { // 连音
+      // 连音
+      if (hasSlur(subItem)) {
         slurTotal = subItem['time-modification']['actual-notes']
         slurMerged++
 
@@ -154,10 +160,23 @@ export default function parseData(
           slurMerged = 0
         }
 
-        node = setNoteSlurProps(node, subItem, slurType) // 添加延长音属性
+        node = setNoteSlurProps(node, subItem, slurType)
       }
 
-      if (isEmpty(node)) { // 异常
+      // 附点
+      const dotType = getDot(subItem)
+      if (dotType) {
+        node = setNoteDotProps(node, dotType)
+      }
+
+      // 时值横杆
+      const beamType = getBeam(subItem)
+      if (beamType) {
+        node = setNoteBeamProps(node, beamType)
+      }
+
+      // 异常
+      if (isEmpty(node)) {
         return
       }
 

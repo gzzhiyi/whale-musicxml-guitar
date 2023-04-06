@@ -53,7 +53,7 @@ export default function parseData(
   const mList: Measure[] = []
   const nList: Note[] = []
 
-  let globalBpm: number = 60
+  let globalBpm: number = 60 // 默认使用60
   let globalBeats: number
   let globalBeatType: number
   let globalCapo: number = 0

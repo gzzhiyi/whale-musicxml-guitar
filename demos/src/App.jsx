@@ -21,7 +21,7 @@ export default function App() {
   }
 
   useEffect(async() => {
-    const xmlDoc = await getXMLData('/xml/test/chord.xml')
+    const xmlDoc = await getXMLData('/xml/test/bpm_bug.xml')
     const SMG = new SMGuitar(xmlDoc, { debug: true })
 
     const data = [
@@ -32,11 +32,11 @@ export default function App() {
       { string: 1, fret: 0 }
     ];
 
-    console.log(SMG.getChordName(data));
-    console.log(SMG.getMeasureById('M_2'))
-    console.log(SMG.getNoteById('N_10'))
-    console.log(SMG.numberToType(8))
-    console.log(SMG.typeToNumber('16th'))
+    // console.log(SMG.getChordName(data))
+    // console.log(SMG.getMeasureById('M_2'))
+    // console.log(SMG.getNoteById('N_10'))
+    // console.log(SMG.numberToType(8))
+    // console.log(SMG.typeToNumber('16th'))
   }, [])
 
   return (

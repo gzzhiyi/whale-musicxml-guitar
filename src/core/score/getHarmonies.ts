@@ -9,7 +9,6 @@ function uniq(arr: any) {
   let [tempId, tempName] = ''
 
   const tempArr: any = []
-
   arr.map((item) => {
     const { measureId, name } = item
 
@@ -19,7 +18,6 @@ function uniq(arr: any) {
 
     tempId = measureId
     tempName = name
-
     tempArr.push(item)
   })
 
@@ -32,19 +30,16 @@ function uniq(arr: any) {
 function formatData(noteXML: any): any {
   if (isArray(noteXML)) {
     const arr: any = []
-
     noteXML.map((item: any = {}) => {
       const { string, fret } = item
       arr.push({ string, fret })
     })
-
     return arr
   }
 
   if (isObject(noteXML)) {
     const o: any = noteXML
     const { string, fret } = o
-
     return { string, fret }
   }
 
@@ -59,6 +54,11 @@ export default function getHarmonies(harmonyXML: HarmonyXML[]): Harmony[] {
 
   harmonyXML.map((item) => {
     const { frame, measureId } = item
+
+    if (!frame?.['frame-note']) {
+      return
+    }
+
     const notes = formatData(frame['frame-note'])
 
     arr.push({

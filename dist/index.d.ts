@@ -29,6 +29,7 @@ export declare class SMGuitar {
     getChordName(data: any): string;
     getMeasureById(id: string): Measure | undefined;
     getNoteById(id: string): Note | undefined;
+    getNoteByMeasureId(measureId: string): Note | undefined;
     numberToType(num: number): NoteType;
     typeToNumber(type: NoteType): number;
 }

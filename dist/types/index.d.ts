@@ -53,6 +53,7 @@ export interface NoteData {
 export interface TimeProps {
     start: number;
     duration: number;
+    end: number;
 }
 export interface SlurProps {
     type: SlurType;
@@ -75,8 +76,10 @@ export interface Measure {
     beats: number;
     beatType: number;
     capo: number;
+    coord?: CoordsProps;
     time?: TimeProps;
     size?: SizeProps;
+    isLast?: boolean;
 }
 export interface Note {
     id: string;

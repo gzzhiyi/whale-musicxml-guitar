@@ -78,6 +78,7 @@ export interface NoteData {
 export interface TimeProps {
   start: number // 开始时间（毫秒）
   duration: number // 持续时间（毫秒）
+  end: number // 结束时间（毫秒）
 }
 
 // 连音属性
@@ -110,8 +111,10 @@ export interface Measure {
   beats: number
   beatType: number
   capo: number
+  coord?: CoordsProps
   time?: TimeProps
   size?: SizeProps
+  isLast?: boolean
 }
 
 // 音符

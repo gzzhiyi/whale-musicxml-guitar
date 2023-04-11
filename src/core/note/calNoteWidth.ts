@@ -1,4 +1,5 @@
 import { Note } from '../../types'
+import numberToNoteType from './numberToNoteType'
 
 const NoteMap = {
   'whole': 64,
@@ -22,7 +23,7 @@ export default function calNoteWidth(note: Note, beats: number, beatType: number
 
   let width = 0
   if (view === 'rest' && type === 'whole') { // 全休止符处理
-    width = beats * beatType * widthUnit
+    width = beats * NoteMap[numberToNoteType(beatType)] * widthUnit
   } else {
     width = widthUnit * NoteMap[type]
   }

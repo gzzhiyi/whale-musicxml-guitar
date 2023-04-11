@@ -110,6 +110,10 @@ export class SMGuitar {
     return find(this.notes, { id })
   }
 
+  getNoteByMeasureId(measureId: string): Note | undefined {
+    return find(this.notes, { measureId })
+  }
+
   numberToType(num: number): NoteType {
     return numberToNoteType(num)
   }

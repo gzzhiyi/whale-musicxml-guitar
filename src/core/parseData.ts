@@ -23,6 +23,7 @@ import calNoteDuration from './note/calNoteDuration'
 import calNoteWidth from './note/calNoteWidth'
 import setMeasureTimeProps from './measure/setMeasureTimeProps'
 import setMeasureSizeProps from './measure/setMeasureSizeProps'
+import setMeasureCoordProps from './measure/setMeasureCoordProps'
 import setNoteTimeProps from './note/setNoteTimeProps'
 import setNoteSlurProps from './note/setNoteSlurProps'
 import setNoteTieProps from './note/setNoteTieProps'
@@ -63,7 +64,7 @@ export default function parseData(
   let totalWidth: number = 0 // 总宽度
   let totalDuration: number = 0 // 总时长
 
-  measureXML.map((measure: MeasureXML) => {
+  measureXML.map((measure: MeasureXML, index: number) => {
     if (isEmpty(measure)) {
       return
     }
@@ -201,6 +202,12 @@ export default function parseData(
 
     m = setMeasureTimeProps(m, totalDuration, mDuration) // 设置小节时间属性
     m = setMeasureSizeProps(m, mWidth) // 设置小节尺寸属性
+    m = setMeasureCoordProps(m, mWidth * index) // 设置小节坐标属性
+
+    if (index + 1 === measureXML.length) { // 是否最后一小节
+      m.isLast = true
+    }
+
     mList.push(m)
     totalDuration += mDuration // 总时长
   })

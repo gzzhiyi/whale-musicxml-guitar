@@ -5,7 +5,7 @@ import noteTypeToNumber from './noteTypeToNumber'
 /**
  * 计算音符时长
  */
-export default function calNoteDuration(note: Note, beats: number, beatType: number, bpm: number, bpmUnit: NoteType): number {
+export default function calNoteDuration(note: Note, beats: number, beatType: number, bpm: number, bpmUnit: NoteType, speed: number): number {
   const { view, type, slur, dot } = note
 
   if (!type) {
@@ -40,5 +40,5 @@ export default function calNoteDuration(note: Note, beats: number, beatType: num
     duration = Math.floor(duration * 1.75)
   }
 
-  return duration
+  return Math.round(duration / speed)
 }

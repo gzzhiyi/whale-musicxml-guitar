@@ -71,9 +71,7 @@ export default function parseData(
 
     const { _number, note, partId } = measure
 
-    let bpm: number = getBpm(measure) || globalBpm
-    bpm = Math.round(bpm * speed)
-
+    const bpm: number = getBpm(measure) || globalBpm
     const beats: number = getBeats(measure) || globalBeats
     const beatType: number = getBeatType(measure) || globalBeatType
     const capo: number = getCapo(measure) || globalCapo
@@ -107,7 +105,7 @@ export default function parseData(
     // 操作下一个音符
     const _toNext = (node) => {
       // 设置音符时间属性
-      const duration = calNoteDuration(node, beats, beatType, bpm, bpmUnit)
+      const duration = calNoteDuration(node, beats, beatType, bpm, bpmUnit, speed)
       node = setNoteTimeProps(node, mDuration, duration)
       mDuration += duration // 累计小节时长
 

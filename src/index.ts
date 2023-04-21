@@ -74,6 +74,10 @@ export class SMGuitar {
       this._bpmUnit = option.bpmUnit
     }
 
+    if (option?.minWidth) {
+      this._minWidth = option.minWidth
+    }
+
     // Original datas
     this._oriXml = parseToJson(xml) || {}
     this._oriParts = findAllParts(this._oriXml)

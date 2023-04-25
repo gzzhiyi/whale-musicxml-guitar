@@ -28,14 +28,14 @@ export default function App() {
       minWidth: 30
     })
 
-    // const data = [
-    //   { string: 5, fret: 3 },
-    //   { string: 2, fret: 1 },
-    //   { string: 3, fret: 0 },
-    //   { string: 4, fret: 2 },
-    //   { string: 1, fret: 0 }
-    // ];
-    // console.log(SMG.getChordName(data))
+    const data = [
+      { string: 5, fret: 3 },
+      { string: 2, fret: 1 },
+      { string: 3, fret: 0 },
+      { string: 4, fret: 2 },
+      { string: 1, fret: 0 }
+    ];
+    console.log(SMG.getChordName(data))
     // console.log(SMG.getMeasureById('M_2'))
     // console.log(SMG.getNoteById('N_10'))
     // console.log(SMG.numberToType(8))

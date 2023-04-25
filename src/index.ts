@@ -1,9 +1,10 @@
 import { XMLValidator } from 'fast-xml-parser'
-import { find } from 'lodash'
+import { filter, find } from 'lodash'
 import {
   Harmony,
   Measure,
   Note,
+  NoteData,
   NoteType
 } from './types'
 import findAllParts from './core/score/findAllParts'
@@ -47,7 +48,7 @@ export class SMGuitar {
   public getChordName: Function = () => {}
   public getMeasureById: Function = () => {}
   public getNoteById: Function = () => {}
-  public getNoteByMeasureId: Function = () => {}
+  public getNotesByMeasureId: Function = () => {}
 
   private _speed: number = 1 // 速度
   private _bpmUnit: NoteType = 'quarter' // BPM单位
@@ -103,10 +104,10 @@ export class SMGuitar {
     this.totalDuration = totalDuration
 
     // 实例方法
-    this.getChordName = (data: any): string => getChordName(data)
+    this.getChordName = (data: NoteData[]): string => getChordName(data)
     this.getMeasureById = (id: string): Measure | undefined => find(this.measures, { id })
     this.getNoteById = (id: string): Note | undefined => find(this.notes, { id })
-    this.getNoteByMeasureId = (measureId: string): Note | undefined => find(this.notes, { measureId })
+    this.getNotesByMeasureId = (measureId: string): Note[] => filter(this.notes, { measureId })
 
     // Logs
     this._debug && console.log(this)

@@ -62,10 +62,7 @@ export interface Clef {
 export interface Harmony {
   firstFret: number
   name: string
-  data: {
-    string: number
-    fret: number
-  }
+  data: NoteData
 }
 
 // 音符数据
@@ -75,31 +72,31 @@ export interface NoteData {
 }
 
 // 时间属性
-export interface TimeProps {
+export interface Time {
   start: number // 开始时间（毫秒）
   duration: number // 持续时间（毫秒）
   end: number // 结束时间（毫秒）
 }
 
 // 连音属性
-export interface SlurProps {
+export interface Slur {
   type: SlurType
   actualNotes: number
   normalNotes: number
 }
 
 // 延长音属性
-export interface TieProps {
+export interface Tie {
   type: TieType
 }
 
 // 坐标属性
-export interface CoordsProps {
+export interface Coord {
   x: number
 }
 
 // 尺寸属性
-export interface SizeProps {
+export interface Size {
   width: number
 }
 
@@ -111,9 +108,9 @@ export interface Measure {
   beats: number
   beatType: number
   capo: number
-  coord?: CoordsProps
-  time?: TimeProps
-  size?: SizeProps
+  coord?: Coord
+  time?: Time
+  size?: Size
   isLast?: boolean
 }
 
@@ -126,10 +123,10 @@ export interface Note {
   view?: NoteView // 音符显示类型
   data?: NoteData | NoteData[]
   dot?: DotType
-  slur?: SlurProps
-  tie?: TieProps
-  time?: TimeProps
-  coord?: CoordsProps
-  size?: SizeProps
+  slur?: Slur
+  tie?: Tie
+  time?: Time
+  coord?: Coord
+  size?: Size
   beam?: BeamType
 }

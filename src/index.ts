@@ -19,7 +19,6 @@ import getChordName from './core/note/getChordName'
 import noteTypeToNumber from './core/note/noteTypeToNumber'
 import numberToNoteType from './core/note/numberToNoteType'
 
-// Option's props type
 interface OptionProps {
   bpm?: number
   bpmUnit?: NoteType
@@ -44,6 +43,11 @@ export class SMGuitar {
   public notes: Note[] = [] // 音符
   public totalWidth: number = 0
   public totalDuration: number = 0
+
+  public getChordName: Function = () => {}
+  public getMeasureById: Function = () => {}
+  public getNoteById: Function = () => {}
+  public getNoteByMeasureId: Function = () => {}
 
   private _speed: number = 1 // 速度
   private _bpmUnit: NoteType = 'quarter' // BPM单位
@@ -98,24 +102,14 @@ export class SMGuitar {
     this.totalWidth = totalWidth
     this.totalDuration = totalDuration
 
+    // 实例方法
+    this.getChordName = (data: any): string => getChordName(data)
+    this.getMeasureById = (id: string): Measure | undefined => find(this.measures, { id })
+    this.getNoteById = (id: string): Note | undefined => find(this.notes, { id })
+    this.getNoteByMeasureId = (measureId: string): Note | undefined => find(this.notes, { measureId })
+
     // Logs
     this._debug && console.log(this)
-  }
-
-  getChordName(data: any): string {
-    return getChordName(data)
-  }
-
-  getMeasureById(id: string): Measure | undefined {
-    return find(this.measures, { id })
-  }
-
-  getNoteById(id: string): Note | undefined {
-    return find(this.notes, { id })
-  }
-
-  getNoteByMeasureId(measureId: string): Note | undefined {
-    return find(this.notes, { measureId })
   }
 
   numberToType(num: number): NoteType {

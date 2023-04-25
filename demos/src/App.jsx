@@ -24,8 +24,8 @@ export default function App() {
     const xmlDoc = await getXMLData('/xml/test/note.xml')
     const SMG = new SMGuitar(xmlDoc, {
       debug: true,
-      speed: 1,
-      minWidth: 10
+      speed: 0.5,
+      minWidth: 30
     })
 
     // const data = [

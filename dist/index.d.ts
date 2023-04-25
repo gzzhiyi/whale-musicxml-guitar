@@ -17,6 +17,10 @@ export declare class SMGuitar {
     notes: Note[];
     totalWidth: number;
     totalDuration: number;
+    getChordName: Function;
+    getMeasureById: Function;
+    getNoteById: Function;
+    getNotesByMeasureId: Function;
     private _speed;
     private _bpmUnit;
     private _debug;
@@ -26,10 +30,6 @@ export declare class SMGuitar {
     private _oriMeasures;
     private _oriHarmonies;
     constructor(xml: string, option?: OptionProps);
-    getChordName(data: any): string;
-    getMeasureById(id: string): Measure | undefined;
-    getNoteById(id: string): Note | undefined;
-    getNoteByMeasureId(measureId: string): Note | undefined;
     numberToType(num: number): NoteType;
     typeToNumber(type: NoteType): number;
 }

@@ -41,32 +41,29 @@ export interface Clef {
 export interface Harmony {
     firstFret: number;
     name: string;
-    data: {
-        string: number;
-        fret: number;
-    };
+    data: NoteData;
 }
 export interface NoteData {
     string: number;
     fret: number;
 }
-export interface TimeProps {
+export interface Time {
     start: number;
     duration: number;
     end: number;
 }
-export interface SlurProps {
+export interface Slur {
     type: SlurType;
     actualNotes: number;
     normalNotes: number;
 }
-export interface TieProps {
+export interface Tie {
     type: TieType;
 }
-export interface CoordsProps {
+export interface Coord {
     x: number;
 }
-export interface SizeProps {
+export interface Size {
     width: number;
 }
 export interface Measure {
@@ -76,9 +73,9 @@ export interface Measure {
     beats: number;
     beatType: number;
     capo: number;
-    coord?: CoordsProps;
-    time?: TimeProps;
-    size?: SizeProps;
+    coord?: Coord;
+    time?: Time;
+    size?: Size;
     isLast?: boolean;
 }
 export interface Note {
@@ -89,10 +86,10 @@ export interface Note {
     view?: NoteView;
     data?: NoteData | NoteData[];
     dot?: DotType;
-    slur?: SlurProps;
-    tie?: TieProps;
-    time?: TimeProps;
-    coord?: CoordsProps;
-    size?: SizeProps;
+    slur?: Slur;
+    tie?: Tie;
+    time?: Time;
+    coord?: Coord;
+    size?: Size;
     beam?: BeamType;
 }

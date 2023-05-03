@@ -1,4 +1,4 @@
-import { uniq } from 'lodash'
+import { uniq, orderBy } from 'lodash'
 
 // 弦品与音符
 const NoteNameMap = {
@@ -390,11 +390,11 @@ function reoreder(root, notes) {
 export default function getChordName(data: any): string {
   let arr: string[] = []
 
+  data = orderBy(data, 'string', 'desc')
   data.map((item) => {
     const { string, fret } = item
     const val = string * 100 + fret
     const name = NoteNameMap[val]
-
     arr.push(name)
   })
 

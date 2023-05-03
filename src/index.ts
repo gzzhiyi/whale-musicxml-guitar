@@ -16,9 +16,9 @@ import getTuningStep from './core/score/getTuningStep'
 import getHarmonies from './core/score/getHarmonies'
 import parseToJson from './core/parseToJson'
 import parseData from './core/parseData'
-import getChordName from './core/note/getChordName'
-import noteTypeToNumber from './core/note/noteTypeToNumber'
-import numberToNoteType from './core/note/numberToNoteType'
+import _getChordName from './core/note/getChordName'
+import _noteTypeToNumber from './core/note/noteTypeToNumber'
+import _numberToNoteType from './core/note/numberToNoteType'
 
 interface OptionProps {
   bpm?: number
@@ -45,7 +45,6 @@ export class SMGuitar {
   public totalWidth: number = 0
   public totalDuration: number = 0
 
-  public getChordName: Function = () => {}
   public getMeasureById: Function = () => {}
   public getNoteById: Function = () => {}
   public getNotesByMeasureId: Function = () => {}
@@ -104,7 +103,6 @@ export class SMGuitar {
     this.totalDuration = totalDuration
 
     // 实例方法
-    this.getChordName = (data: NoteData[]): string => getChordName(data)
     this.getMeasureById = (id: string): Measure | undefined => find(this.measures, { id })
     this.getNoteById = (id: string): Note | undefined => find(this.notes, { id })
     this.getNotesByMeasureId = (measureId: string): Note[] => filter(this.notes, { measureId })
@@ -112,12 +110,16 @@ export class SMGuitar {
     // Logs
     this._debug && console.log(this)
   }
+}
 
-  numberToType(num: number): NoteType {
-    return numberToNoteType(num)
-  }
+export function getChordName(data: NoteData): string {
+  return _getChordName(data)
+}
 
-  typeToNumber(type: NoteType): number {
-    return noteTypeToNumber(type)
-  }
+export function numberToType(num: number): NoteType {
+  return _numberToNoteType(num)
+}
+
+export function typeToNumber(type: NoteType): number {
+  return _noteTypeToNumber(type)
 }

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import axios from 'axios'
-import { SMGuitar } from '../dist/index.esm.js'
+import { SMGuitar, getChordName } from '../dist/index.esm.js'
 
 export default function App() {
   async function getXMLData(xmlUrl) {
@@ -29,13 +29,13 @@ export default function App() {
     })
 
     const data = [
-      { string: 5, fret: 3 },
-      { string: 2, fret: 1 },
-      { string: 3, fret: 0 },
-      { string: 4, fret: 2 },
-      { string: 1, fret: 0 }
+      { string: 3, fret: 2 },
+      { string: 4, fret: 0 },
+      { string: 2, fret: 3 },
+      { string: 1, fret: 2 }
     ];
-    console.log(SMG.getChordName(data))
+
+    console.log(getChordName(data))
     // console.log(SMG.getMeasureById('M_2'))
     // console.log(SMG.getNoteById('N_10'))
     // console.log(SMG.numberToType(8))

@@ -1,4 +1,4 @@
-import { Harmony, Measure, Note, NoteType } from './types';
+import { Harmony, Measure, Note, NoteData, NoteType } from './types';
 interface OptionProps {
     bpm?: number;
     bpmUnit?: NoteType;
@@ -17,7 +17,6 @@ export declare class SMGuitar {
     notes: Note[];
     totalWidth: number;
     totalDuration: number;
-    getChordName: Function;
     getMeasureById: Function;
     getNoteById: Function;
     getNotesByMeasureId: Function;
@@ -30,7 +29,8 @@ export declare class SMGuitar {
     private _oriMeasures;
     private _oriHarmonies;
     constructor(xml: string, option?: OptionProps);
-    numberToType(num: number): NoteType;
-    typeToNumber(type: NoteType): number;
 }
+export declare function getChordName(data: NoteData): string;
+export declare function numberToType(num: number): NoteType;
+export declare function typeToNumber(type: NoteType): number;
 export {};

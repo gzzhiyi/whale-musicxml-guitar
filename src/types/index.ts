@@ -74,8 +74,10 @@ export interface NoteData {
 // 时间属性
 export interface Time {
   start: number // 开始时间（毫秒）
+  startRange?: number // 开始时间范围（毫秒）
   duration: number // 持续时间（毫秒）
   end: number // 结束时间（毫秒）
+  endRang?: number // 结束时间范围（毫秒）
 }
 
 // 连音属性

@@ -53,7 +53,7 @@ export default function getHarmonies(harmonyXML: HarmonyXML[]): Harmony[] {
   const arr: any = []
 
   harmonyXML.map((item) => {
-    const { frame, measureId } = item
+    const { frame, measureId, root } = item
 
     if (!frame?.['frame-note']) {
       return
@@ -63,7 +63,7 @@ export default function getHarmonies(harmonyXML: HarmonyXML[]): Harmony[] {
 
     arr.push({
       measureId,
-      name: getChordName(notes),
+      name: getChordName(notes) || root?.['root-step'],
       firstFret: frame['first-fret'] || 1,
       data: notes
     })

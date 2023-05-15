@@ -21,21 +21,20 @@ export default function App() {
   }
 
   useEffect(async() => {
-    const xmlDoc = await getXMLData('/xml/test/note.xml')
+    const xmlDoc = await getXMLData('/xml/test/capo.xml')
     const SMG = new SMGuitar(xmlDoc, {
       debug: true,
       speed: 0.5,
       minWidth: 30
     })
 
-    const data = [
-      { string: 3, fret: 2 },
-      { string: 4, fret: 0 },
-      { string: 2, fret: 3 },
-      { string: 1, fret: 2 }
-    ];
-
-    console.log(getChordName(data))
+    // const data = [
+    //   { string: 3, fret: 2 },
+    //   { string: 4, fret: 0 },
+    //   { string: 2, fret: 3 },
+    //   { string: 1, fret: 2 }
+    // ];
+    // console.log(getChordName(data))
     // console.log(SMG.getMeasureById('M_2'))
     // console.log(SMG.getNoteById('N_10'))
     // console.log(SMG.numberToType(8))

@@ -183,7 +183,7 @@ export default function parseData(
     })
 
     // 如果小节没有<note>，则自动补上一个全休止符
-    if (isEmpty(nList)) {
+    if (isEmpty(notes)) {
       const node: Note = { id: `N_${noteCount}`, measureId: mId, type: 'whole', view: 'rest' }
       _toNext(node)
     }

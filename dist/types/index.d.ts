@@ -49,8 +49,10 @@ export interface NoteData {
 }
 export interface Time {
     start: number;
+    startRange?: number;
     duration: number;
     end: number;
+    endRang?: number;
 }
 export interface Slur {
     type: SlurType;

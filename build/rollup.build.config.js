@@ -4,7 +4,7 @@ import eslint from '@rollup/plugin-eslint'
 import replace from '@rollup/plugin-replace'
 import json from '@rollup/plugin-json'
 import typescript from 'rollup-plugin-typescript2'
-import { uglify } from 'rollup-plugin-uglify'
+import { terser } from 'rollup-plugin-terser'
 import del from 'rollup-plugin-delete'
 import path from 'path'
 import packageJSON from '../package.json'
@@ -58,6 +58,6 @@ export default {
     typescript({
       extensions
     }),
-    uglify()
+    terser()
   ]
 }

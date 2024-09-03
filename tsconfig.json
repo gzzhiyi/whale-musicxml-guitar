@@ -1,6 +1,9 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
     "outDir": "./dist", // 输出目录
     "sourceMap": false, // 是否生成sourceMap
     "jsx": "react",
@@ -10,7 +13,7 @@
     "noImplicitAny": false,
     "allowJs": false, // 是否编辑js文件
     "strict": true, // 严格模式
-    "noUnusedLocals": true, // 未使用变量报错
+    "noUnusedLocals": false, // 未使用变量报错
     "experimentalDecorators": true, // 启动装饰器
     "resolveJsonModule": true, // 加载json
     "esModuleInterop": true,
@@ -20,9 +23,7 @@
     "declarationDir": "./dist/types", // 定义文件输出目录
     "lib": ["esnext", "dom"] // 导入库类型定义
   },
-  "include": [
-    "./src/**/*"
-  ],
+  "include": ["src"],
   "exclude": [
     "**/*.spec.ts",
     "node_modules",

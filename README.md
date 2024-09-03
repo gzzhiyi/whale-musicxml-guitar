@@ -19,14 +19,14 @@
 ## Start
 
 ```js
-  import { SMGuitar } from 'simple-musicxml-guitar'
+  import { Parser } from 'simple-musicxml-guitar'
 
   async function loadXMLDoc() {
     // Load XML document...
   }
 
   const xmlDoc = await loadXMLDoc('/xml/example.xml')
-  const SMG = new SMGuitar(xmlDoc, { debug: true })
+  const Parser = new Parser(xmlDoc, { debug: true })
 
   // return a Query object -
   // { harmonies: [], measures: [], notes: [], timeline: [], ... }

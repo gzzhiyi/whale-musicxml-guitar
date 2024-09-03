@@ -1,6 +1,6 @@
 import { uniq, orderBy } from 'lodash'
+import { Technical } from '@/types'
 
-// 弦品与音符
 const NoteNameMap = {
   100: 'E',
   101: 'F',
@@ -356,9 +356,6 @@ const ChordNameMap = {
   'B|C#|D#|F#': 'Badd9'
 }
 
-/**
- * 获取排序
- */
 function getOrder(root: string): string[] {
   const oList = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
   const index = oList.indexOf(root)
@@ -367,9 +364,6 @@ function getOrder(root: string): string[] {
   return spliceArr.concat(oList)
 }
 
-/**
- * 重排
- */
 function reoreder(root, notes) {
   const list = getOrder(root)
 
@@ -382,12 +376,7 @@ function reoreder(root, notes) {
   return arr.filter((s) => s && s.trim())
 }
 
-/**
- * 获取和弦名称
- * @param {number} string - 弦
- * @param {number} fret - 品
- */
-export default function getChordName(data: any): string {
+export default function getChordName(data: Technical[]): string {
   let arr: string[] = []
 
   data = orderBy(data, 'string', 'desc')

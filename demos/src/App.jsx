@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import axios from 'axios'
-import { SMGuitar, getChordName } from '../dist/index.esm.js'
+import { Parser, getChordName } from '../dist/index.esm.js'
 
 export default function App() {
   async function getXMLData(xmlUrl) {
@@ -21,11 +21,9 @@ export default function App() {
   }
 
   useEffect(async() => {
-    const xmlDoc = await getXMLData('/xml/test/capo.xml')
-    const SMG = new SMGuitar(xmlDoc, {
-      debug: true,
-      speed: 0.5,
-      minWidth: 30
+    const xmlDoc = await getXMLData('/xml/test/chord.xml')
+    const parser = new Parser(xmlDoc, {
+      debug: true
     })
 
     // const data = [

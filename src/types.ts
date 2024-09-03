@@ -108,7 +108,7 @@ export type Measure = {
   metronome: Metronome
   notes: Note[]
   number: string
-  time: Time
+  time: Time | null
   timeSignature: TimeSignature
 }
 

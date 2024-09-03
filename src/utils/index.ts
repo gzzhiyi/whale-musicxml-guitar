@@ -9,7 +9,9 @@ export function noteTypeToNumber(type: NoteType): number {
     'half': 2,
     'quarter': 4,
     'eighth': 8,
-    '16th': 16
+    '16th': 16,
+    '32nd': 32,
+    '64th': 64
   }
 
   if (!types[type]) {
@@ -28,7 +30,9 @@ export function numberToNoteType(num: number): NoteType {
     2: 'half',
     4: 'quarter',
     8: 'eighth',
-    16: '16th'
+    16: '16th',
+    32: '32nd',
+    64: '64th'
   }
 
   if (!types[num]) {

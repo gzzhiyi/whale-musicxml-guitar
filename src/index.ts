@@ -1,5 +1,11 @@
-import { isArray, isEmpty, isObject } from 'lodash'
+import {
+  find,
+  isArray,
+  isEmpty,
+  isObject
+} from 'lodash'
 import { XMLValidator } from 'fast-xml-parser'
+import parseXML from '@/core/parseXML'
 import {
   Measure,
   MeasureXML,
@@ -8,7 +14,6 @@ import {
   NoteType,
   PartXML
 } from '@/types'
-import parseXML from '@/core/parseXML'
 import PartClass from '@/classes/Part'
 
 type OptionType = {
@@ -17,6 +22,10 @@ type OptionType = {
   debug?: boolean
   speed?: number
 }
+
+export { default as getChordName } from '@/utils/getChordName'
+
+export { noteTypeToNumber, numberToNoteType } from '@/utils'
 
 export class Parser {
   public xmlVersion: string = ''
@@ -60,6 +69,13 @@ export class Parser {
   }
 
   getMeasureById(id: string): Measure | null {
+    for (const part of this.parts) {
+      const measure = find(part.measures, { id })
+      if (measure) {
+        return measure
+      }
+    }
+
     return null
   }
 
@@ -71,7 +87,11 @@ export class Parser {
   }
 
   getNoteById(id: string): Note | null {
-    return null
+    const allNotes = this.parts.flatMap(part =>
+      part.measures.flatMap(measure => measure.notes)
+    )
+
+    return find(allNotes, { id }) || null
   }
 
   private getParts(xml: MusicXML): PartXML[] {

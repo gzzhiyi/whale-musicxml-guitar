@@ -1,6 +1,11 @@
 import React, { useEffect } from 'react'
 import axios from 'axios'
-import { Parser, getChordName } from '../dist/index.esm.js'
+import {
+  Parser,
+  getChordName,
+  noteTypeToNumber,
+  numberToNoteType
+} from '../dist/index.esm.js'
 
 export default function App() {
   async function getXMLData(xmlUrl) {
@@ -26,17 +31,17 @@ export default function App() {
       debug: true
     })
 
-    // const data = [
-    //   { string: 3, fret: 2 },
-    //   { string: 4, fret: 0 },
-    //   { string: 2, fret: 3 },
-    //   { string: 1, fret: 2 }
-    // ];
-    // console.log(getChordName(data))
-    // console.log(SMG.getMeasureById('M_2'))
-    // console.log(SMG.getNoteById('N_10'))
-    // console.log(SMG.numberToType(8))
-    // console.log(SMG.typeToNumber('16th'))
+    const data = [
+      { string: 3, fret: 2 },
+      { string: 4, fret: 0 },
+      { string: 2, fret: 3 },
+      { string: 1, fret: 2 }
+    ]
+    console.log(getChordName(data))
+    console.log(parser.getMeasureById('M_2'))
+    console.log(parser.getNoteById('N_2_2'))
+    console.log(noteTypeToNumber('16th'))
+    console.log(numberToNoteType(32))
   }, [])
 
   return (

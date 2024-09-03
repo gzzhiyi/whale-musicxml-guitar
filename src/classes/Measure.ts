@@ -1,7 +1,6 @@
 import { has, isArray, isEmpty } from 'lodash'
 import { noteTypeToNumber } from '@/utils'
-import getChordName from '@/core/getChordName'
-import NoteClass from '@/classes/Note'
+import getChordName from '@/utils/getChordName'
 import {
   Harmony,
   MeasureXML,
@@ -12,6 +11,7 @@ import {
   Technical,
   Time
 } from '@/types'
+import NoteClass from '@/classes/Note'
 
 type PropsType = {
   id: string

@@ -1,8 +1,10 @@
 import { isArray, isEmpty, isObject } from 'lodash'
 import { XMLValidator } from 'fast-xml-parser'
 import {
+  Measure,
   MeasureXML,
   MusicXML,
+  Note,
   NoteType,
   PartXML
 } from '@/types'
@@ -57,11 +59,19 @@ export class Parser {
     return true
   }
 
+  getMeasureById(id: string): Measure | null {
+    return null
+  }
+
   private getMeasures(partXML: PartXML): MeasureXML[] {
     const measure = partXML.measure;
     if (isArray(measure)) return measure
     if (isObject(measure)) return [measure]
     return []
+  }
+
+  getNoteById(id: string): Note | null {
+    return null
   }
 
   private getParts(xml: MusicXML): PartXML[] {

@@ -1,5 +1,6 @@
 import {
   find,
+  has,
   isArray,
   isEmpty,
   isObject
@@ -11,57 +12,66 @@ import {
   MeasureXML,
   MusicXML,
   Note,
-  NoteType,
   PartXML
 } from '@/types'
 import PartClass from '@/classes/Part'
 
 type OptionType = {
-  bpm?: number
-  bpmUnit?: NoteType
   debug?: boolean
   speed?: number
+  xmlStr: string
 }
 
 export default class Parser {
-  public xmlVersion: string = ''
-  public scoreVersion: string = ''
-  public scoreType: string = ''
-
-  public duration: number = 0
   public parts: PartClass[] = []
   public title: string = ''
 
   private _debug: boolean = false
+  private _oriXml: MusicXML | {} = {}
   private _speed: number = 1
 
-  private _oriXml: MusicXML | {} = {}
+  constructor(option: OptionType) {
+    const { debug, speed, xmlStr } = option
 
-  constructor(xmlStr: string, option: OptionType = {}) {
-    if (!this.validateXML(xmlStr)) return
-
-    // Options
-    this._debug = option.debug ?? this._debug
-    this._speed = option.speed ?? this._speed
+    if (!XMLValidator.validate(xmlStr)) {
+      console.error('Not valid file type.')
+      return
+    }
 
     // Original data
+    this._debug = debug ?? this._debug
     this._oriXml = parseXML(xmlStr) || {}
+    this._speed = speed ?? this._speed
 
     this.parts = this.getParts(this._oriXml).map((part) => {
       const measures = this.getMeasures(part)
       return new PartClass({ measures })
     })
 
+    this.title = this.getTitle(this._oriXml)
+
     // Logs
     this._debug && console.log(this)
   }
 
-  private validateXML(xmlStr: string): boolean {
-    if (!XMLValidator.validate(xmlStr)) {
-      console.error('Not valid file type.')
-      return false
-    }
-    return true
+  private getTitle(musicXml: MusicXML): string {
+    return musicXml['score-partwise']?.work?.['work-title'] || ''
+  }
+
+  private filterTabParts(parts: PartXML[]): PartXML[] {
+    return parts.filter(part => {
+      const measure = part.measure
+      const firstMeasure = isArray(measure) ? measure[0] : isObject(measure) ? measure : null
+      return firstMeasure?.attributes?.clef?.sign === 'TAB'
+    })
+  }
+
+  private getParts(xml: MusicXML): PartXML[] {
+    const partXML = xml?.['score-partwise']?.part
+    if (isEmpty(partXML)) return []
+
+    const parts: PartXML[] = isArray(partXML) ? partXML : isObject(partXML) ? [partXML] : []
+    return this.filterTabParts(parts)
   }
 
   getMeasureById(id: string): Measure | null {
@@ -88,21 +98,5 @@ export default class Parser {
     )
 
     return find(allNotes, { id }) || null
-  }
-
-  private getParts(xml: MusicXML): PartXML[] {
-    const partXML = xml?.['score-partwise']?.part
-    if (isEmpty(partXML)) return []
-
-    const parts: PartXML[] = isArray(partXML) ? partXML : isObject(partXML) ? [partXML] : []
-    return this.filterTabParts(parts)
-  }
-
-  private filterTabParts(parts: PartXML[]): PartXML[] {
-    return parts.filter(part => {
-      const measure = part.measure
-      const firstMeasure = isArray(measure) ? measure[0] : isObject(measure) ? measure : null
-      return firstMeasure?.attributes?.clef?.sign === 'TAB'
-    })
   }
 }

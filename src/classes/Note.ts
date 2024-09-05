@@ -32,7 +32,7 @@ export default class Note implements NoteInterface {
   public dot: DotValue = null
   public id: string
   public notations: Notations
-  public stem: StemValue
+  public stem: StemValue | null = null
   public time: Time | null = null
   public timeModification: TimeModification | null
   public type: NoteType

@@ -26,8 +26,9 @@ export default function App() {
   }
 
   useEffect(async() => {
-    const xmlDoc = await getXMLData('/xml/test/chord.xml')
-    const parser = new Parser(xmlDoc, {
+    const xmlStr = await getXMLData('/xml/test/note.xml')
+    const parser = new Parser({
+      xmlStr,
       debug: true
     })
 

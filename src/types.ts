@@ -2,17 +2,17 @@ export type NoteType = 'whole' | 'half' | 'quarter' | 'eighth' | '16th' | '32nd'
 
 export type NoteView = 'single' | 'chord' | 'rest'
 
-export type DotValue = 'dot' | 'doubleDot' | null
+export type DotValue = null | 'dot' | 'doubleDot'
 
 export type BeamValue = 'begin' | 'continue' | 'end'
 
-export type SlurValue = 'start' | 'continue' | 'end' | null
+export type SlurValue = null | 'start' | 'continue' | 'end'
 
-export type StemValue = 'up' | 'down' | null
+export type StemValue = 'up' | 'down'
 
-export type TiedValue = 'start' | 'continue' | 'stop'
+export type TiedValue = null | 'start' | 'continue' | 'stop'
 
-export type TupletValue = 'start' | 'continue' | 'stop'
+export type TupletValue = null | 'start' | 'continue' | 'stop'
 
 export type MusicXML = {
   'score-partwise'?: PartwiseXML
@@ -20,6 +20,9 @@ export type MusicXML = {
 
 type PartwiseXML = {
   part?: PartXML[]
+  work?: {
+    'work-title': string
+  }
 }
 
 export type PartXML = {
@@ -124,7 +127,7 @@ export type Note = {
   dot: DotValue
   id: string
   notations: Notations
-  stem: StemValue
+  stem: StemValue | null
   time: Time | null
   timeModification: TimeModification | null
   type: NoteType

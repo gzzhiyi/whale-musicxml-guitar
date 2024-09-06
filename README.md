@@ -1,25 +1,27 @@
-# Simple MusicXML Guitar
+# Whale MusicXML Guitar
+这是一个专为吉他设计的 npm 工具包，用于将吉他相关的 MusicXML 数据转换为 JSON 格式。工具包能够解析 TAB 乐谱中的音符、和弦等信息，并将其转换为结构化的 JSON 格式，方便在应用程序中进行处理或可视化展示。
 
-解析吉他乐谱 MusicXML 为 JSON 格式。请参考[W3C MusicXML](https://www.w3.org/2021/06/musicxml40/)。
+## 功能特点
+- 专门解析吉他乐谱中的音符和和弦数据。
+- 高效的 MusicXML 到 JSON 数据转换。
+- 适合集成到音乐应用或吉他相关项目中。
+- 轻量级、易于使用。
 
-## Install
+## 安装
 
-### npm install
+通过NPM安装
+```bash
+  npm i whale-musicxml-guitar
+```
 
-  ```bash
-    npm i simple-musicxml-guitar
-  ```
+通过Yarn安装
+```bash
+  yarn add whale-musicxml-guitar
+```
 
-### yarn install
-
-  ```bash
-    yarn add simple-musicxml-guitar
-  ```
-
-## Start
-
+## 使用
 ```js
-  import { Parser } from 'simple-musicxml-guitar'
+  import { Parser } from 'whale-musicxml-guitar'
 
   async function loadXMLDoc() {
     // Load XML document...
@@ -31,3 +33,8 @@
   // return a Query object -
   // { harmonies: [], measures: [], notes: [], timeline: [], ... }
 ```
+
+## API文档
+
+
+## Demo

@@ -26,7 +26,7 @@ export default function App() {
   }
 
   useEffect(async() => {
-    const xmlStr = await getXMLData('/xml/test/note.xml')
+    const xmlStr = await getXMLData('/xml/test/chord.xml')
     const parser = new Parser({
       xmlStr,
       debug: true
@@ -38,6 +38,7 @@ export default function App() {
       { string: 2, fret: 3 },
       { string: 1, fret: 2 }
     ]
+
     console.log(getChordName(data))
     console.log(parser.getMeasureById('M_2'))
     console.log(parser.getNoteById('N_2_2'))

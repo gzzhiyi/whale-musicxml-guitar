@@ -2,11 +2,11 @@ import { has, isArray, isEmpty } from 'lodash'
 import { noteTypeToNumber } from '@/utils'
 import getChordName from '@/utils/getChordName'
 import {
-  Harmony,
   MeasureXML,
+  NoteXML,
+  Harmony,
   Metronome,
   Note,
-  NoteXML,
   TimeSignature,
   Technical,
   Time
@@ -28,12 +28,12 @@ export default class Measure {
   public id: string
   public capo: number
   public harmonies: Harmony[]
-  public timeSignature: TimeSignature
   public metronome: Metronome
   public notes: Note[]
   public number: string
   public isLast: boolean
   public time: Time | null = null
+  public timeSignature: TimeSignature
 
   private startTime: number
 
@@ -64,21 +64,20 @@ export default class Measure {
   }
 
   private getHarmonies(measureXML: MeasureXML): Harmony[] {
-    if (!measureXML.harmony) {
+    const { harmony } = measureXML
+    if (!harmony) {
       return []
     }
 
-    const harmoniesXML = isArray(measureXML.harmony) ? measureXML.harmony : [measureXML.harmony]
+    const harmoniesXML = isArray(harmony) ? harmony : [harmony]
 
-    return harmoniesXML.map((harmony) => {
-      const data: Technical[] = harmony.frame['frame-note'].map(({ fret = 0, string = 0 }) => ({
-        fret,
-        string
-      }))
+    return harmoniesXML.map(({ frame }) => {
+      const { 'first-fret': firstFret = 0, 'frame-note': frameNotes = [] } = frame
+      const data: Technical[] = frameNotes.map(({ fret = 0, string = 0 }) => ({ fret, string }))
 
       return {
         data,
-        firstFret: harmony.frame?.['first-fret'] || 0,
+        firstFret,
         name: getChordName(data)
       }
     })

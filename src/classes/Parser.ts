@@ -1,6 +1,5 @@
 import {
   find,
-  has,
   isArray,
   isEmpty,
   isObject
@@ -8,15 +7,15 @@ import {
 import { XMLValidator } from 'fast-xml-parser'
 import parseXML from '@/core/parseXML'
 import {
-  Measure,
-  MeasureXML,
   MusicXML,
-  Note,
-  PartXML
+  PartXML,
+  MeasureXML,
+  Measure,
+  Note
 } from '@/types'
 import PartClass from '@/classes/Part'
 
-type OptionType = {
+type PropsType = {
   debug?: boolean
   speed?: number
   xmlStr: string
@@ -30,8 +29,8 @@ export default class Parser {
   private _oriXml: MusicXML | {} = {}
   private _speed: number = 1
 
-  constructor(option: OptionType) {
-    const { debug, speed, xmlStr } = option
+  constructor(props: PropsType) {
+    const { debug, speed, xmlStr } = props
 
     if (!XMLValidator.validate(xmlStr)) {
       console.error('Not valid file type.')

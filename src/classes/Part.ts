@@ -5,6 +5,7 @@ import MeasureClass from '@/classes/Measure'
 
 type PropsType = {
   measures: MeasureXML[]
+  speed?: number
 }
 
 export default class Part {
@@ -16,7 +17,7 @@ export default class Part {
   private beats = 4
   private beatType = 4
 
-  constructor({ measures }: PropsType) {
+  constructor({ measures, speed }: PropsType) {
     measures.forEach((measure, index) => {
       const metronome = this.getMetronome(measure)
       if (metronome) this.setGlobalMetronome(metronome)
@@ -27,6 +28,7 @@ export default class Part {
       const measureClass = new MeasureClass({
         id: `M_${index + 1}`,
         xmlData: measure,
+        speed: speed || 1,
         startTime: this.duration,
         beatUnit: this.beatUnit,
         bpm: this.bpm,

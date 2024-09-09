@@ -22,6 +22,7 @@ type PropsType = {
   beats: number
   beatType: number
   isLast: boolean
+  speed: number
 }
 
 export default class Measure {
@@ -36,6 +37,7 @@ export default class Measure {
   public timeSignature: TimeSignature
 
   private startTime: number
+  private speed: number
 
   constructor({
     id,
@@ -45,11 +47,14 @@ export default class Measure {
     bpm,
     beats,
     beatType,
-    isLast
+    isLast,
+    speed
   }: PropsType) {
     this.id = id
     this.isLast = isLast
     this.startTime = startTime
+
+    this.speed = speed || 1
 
     this.capo = this.getCapo(xmlData)
     this.harmonies = this.getHarmonies(xmlData)
@@ -117,7 +122,7 @@ export default class Measure {
 
   private addNoteToList(noteClass: NoteClass, notesList: NoteClass[]) {
     const startTime = this.time?.start || this.startTime
-    const duration = this.calculateNoteDuration(noteClass, 1)
+    const duration = this.calNoteDuration(noteClass)
 
     this.time = {
       start: startTime,
@@ -137,7 +142,7 @@ export default class Measure {
     return has(noteXML, 'chord')
   }
 
-  private calculateNoteDuration(note: Note, speed: number): number {
+  private calNoteDuration(note: Note): number {
     const { view, type, timeModification, notations, dot } = note
 
     if (!type) {
@@ -164,6 +169,6 @@ export default class Measure {
       duration = Math.floor(duration * 1.75)
     }
 
-    return Math.round(duration / speed)
+    return Math.round(duration / this.speed)
   }
 }

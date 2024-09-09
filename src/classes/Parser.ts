@@ -44,7 +44,7 @@ export default class Parser {
 
     this.parts = this.getParts(this._oriXml).map((part) => {
       const measures = this.getMeasures(part)
-      return new PartClass({ measures })
+      return new PartClass({ measures, speed })
     })
 
     this.title = this.getTitle(this._oriXml)

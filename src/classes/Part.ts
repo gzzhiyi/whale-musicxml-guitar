@@ -1,7 +1,7 @@
 import { isEmpty } from 'lodash'
 import { noteTypeToNumber } from '@/utils'
-import { MeasureXML, Metronome, TimeSignature } from '@/types'
 import MeasureClass from '@/classes/Measure'
+import { MeasureXML, Metronome, TimeSignature } from '@/types'
 
 type PropsType = {
   measures: MeasureXML[]
@@ -9,13 +9,13 @@ type PropsType = {
 }
 
 export default class Part {
-  public measures: MeasureClass[] = []
   public duration: number = 0
+  public measures: MeasureClass[] = []
 
-  private beatUnit = 4
-  private bpm = 60
   private beats = 4
   private beatType = 4
+  private beatUnit = 4
+  private bpm = 60
 
   constructor({ measures, speed }: PropsType) {
     measures.forEach((measure, index) => {
@@ -27,14 +27,14 @@ export default class Part {
 
       const measureClass = new MeasureClass({
         id: `M_${index + 1}`,
-        xmlData: measure,
-        speed: speed || 1,
-        startTime: this.duration,
         beatUnit: this.beatUnit,
         bpm: this.bpm,
         beats: this.beats,
         beatType: this.beatType,
-        isLast: index === measures.length - 1
+        isLast: index === measures.length - 1,
+        speed: speed || 1,
+        startTime: this.duration,
+        xmlData: measure
       })
 
       this.duration += measureClass.time?.duration || 0

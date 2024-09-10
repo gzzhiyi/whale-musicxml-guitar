@@ -1,18 +1,18 @@
 import { has, isArray } from 'lodash'
 import {
-  NoteXML,
+  BeamValue,
+  DotValue,
   Notations,
+  Note as NoteT,
   NoteData,
   NoteType,
   NoteView,
-  Note as NoteT,
-  Time,
-  BeamValue,
-  DotValue,
-  StemValue,
-  TimeModification,
+  NoteXML,
   SlurValue,
+  StemValue,
   TiedValue,
+  Time,
+  TimeModification,
   TupletValue
 } from '@/types'
 
@@ -22,8 +22,8 @@ type PropsType = {
 }
 
 interface NoteInterface extends NoteT {
-  getData(noteXML: NoteXML): NoteData | null
   appendData(data: NoteData): void
+  getData(noteXML: NoteXML): NoteData | null
 }
 
 export default class Note implements NoteInterface {
@@ -39,9 +39,9 @@ export default class Note implements NoteInterface {
   public view: NoteView
 
   constructor ({ id, xmlData }: PropsType) {
-    this.id = id
     this.beam = this.getBeam(xmlData)
     this.dot = this.getDot(xmlData)
+    this.id = id
     this.notations = this.getNotations(xmlData)
     this.stem = this.getStem(xmlData)
     this.timeModification = this.getTimeModification(xmlData)

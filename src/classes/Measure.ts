@@ -1,43 +1,43 @@
 import { has, isArray, isEmpty } from 'lodash'
 import { noteTypeToNumber } from '@/utils'
 import getChordName from '@/utils/getChordName'
+import NoteClass from '@/classes/Note'
 import {
-  MeasureXML,
-  NoteXML,
   Harmony,
+  MeasureXML,
   Metronome,
   Note,
-  TimeSignature,
+  NoteXML,
   Technical,
-  Time
+  Time,
+  TimeSignature
 } from '@/types'
-import NoteClass from '@/classes/Note'
 
 type PropsType = {
-  id: string
-  xmlData: MeasureXML
-  startTime: number
-  beatUnit: number
-  bpm: number
   beats: number
   beatType: number
+  beatUnit: number
+  bpm: number
+  id: string
   isLast: boolean
   speed: number
+  startTime: number
+  xmlData: MeasureXML
 }
 
 export default class Measure {
-  public id: string
   public capo: number
   public harmonies: Harmony[]
   public metronome: Metronome
   public notes: Note[]
   public number: string
+  public id: string
   public isLast: boolean
   public time: Time | null = null
   public timeSignature: TimeSignature
 
-  private startTime: number
   private speed: number
+  private startTime: number
 
   constructor({
     id,
@@ -50,18 +50,19 @@ export default class Measure {
     isLast,
     speed
   }: PropsType) {
+    // Props
     this.id = id
     this.isLast = isLast
     this.startTime = startTime
-
     this.speed = speed || 1
 
+    // Prototypes
     this.capo = this.getCapo(xmlData)
-    this.harmonies = this.getHarmonies(xmlData)
     this.metronome = { beatUnit, bpm }
     this.timeSignature = { beats, beatType }
     this.number = this.getNumber(xmlData)
     this.notes = this.getNotes(xmlData)
+    this.harmonies = this.getHarmonies(xmlData)
   }
 
   private getCapo(measureXML: MeasureXML): number {
@@ -102,7 +103,7 @@ export default class Measure {
         const lastNote = notesList[notesList.length - 1]
         lastNote.view = 'chord'
         const data = lastNote.getData(noteXML)
-        if (data) lastNote.appendData(data)
+        data && lastNote.appendData(data)
       } else {
         const noteClass = new NoteClass({
           id: `N_${this.number}_${count}`,
@@ -110,7 +111,7 @@ export default class Measure {
         })
 
         const data = noteClass.getData(noteXML)
-        if (data) noteClass.appendData(data)
+        data && noteClass.appendData(data)
 
         this.addNoteToList(noteClass, notesList)
         count++

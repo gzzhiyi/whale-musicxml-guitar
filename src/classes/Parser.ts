@@ -6,14 +6,14 @@ import {
 } from 'lodash'
 import { XMLValidator } from 'fast-xml-parser'
 import parseXML from '@/core/parseXML'
+import PartClass from '@/classes/Part'
 import {
   MusicXML,
-  PartXML,
   MeasureXML,
   Measure,
-  Note
+  Note,
+  PartXML
 } from '@/types'
-import PartClass from '@/classes/Part'
 
 type PropsType = {
   debug?: boolean

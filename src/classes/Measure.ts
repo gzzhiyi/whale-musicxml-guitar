@@ -126,8 +126,8 @@ export default class Measure {
     const duration = this.calNoteDuration(noteClass)
 
     this.time = {
-      start: startTime,
-      duration,
+      start: startTime + duration,
+      duration: (this.time?.duration || 0) + duration,
       end: startTime + duration
     }
 

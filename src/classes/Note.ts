@@ -1,19 +1,19 @@
 import { has, isArray } from 'lodash'
 import {
-  BeamValue,
-  DotValue,
+  Beam,
+  Dot,
   Notations,
   Note as NoteT,
   NoteData,
   NoteType,
   NoteView,
   NoteXML,
-  SlurValue,
-  StemValue,
-  TiedValue,
+  Slur,
+  Stem,
+  Tied,
   Time,
   TimeModification,
-  TupletValue
+  Tuplet
 } from '@/types'
 
 type PropsType = {
@@ -27,12 +27,12 @@ interface NoteInterface extends NoteT {
 }
 
 export default class Note implements NoteInterface {
-  public beam: BeamValue[] | null
+  public beam: Beam[] | null
   public data: NoteData[] | null = null
-  public dot: DotValue = null
+  public dot: Dot | null = null
   public id: string
   public notations: Notations
-  public stem: StemValue | null = null
+  public stem: Stem | null = null
   public time: Time | null = null
   public timeModification: TimeModification | null
   public type: NoteType
@@ -47,13 +47,9 @@ export default class Note implements NoteInterface {
     this.timeModification = this.getTimeModification(xmlData)
     this.type = this.getType(xmlData)
     this.view = this.getView(xmlData)
-
-    if (this.view !== 'rest') {
-      this.data = [this.getData(xmlData)].filter(Boolean) as NoteData[]
-    }
   }
 
-  private getBeam(noteXML: NoteXML): BeamValue[] | null {
+  private getBeam(noteXML: NoteXML): Beam[] | null {
     const beam = noteXML.beam
     if (!beam) return null
 
@@ -74,7 +70,7 @@ export default class Note implements NoteInterface {
     }
   }
 
-  private getDot(noteXML: NoteXML): DotValue {
+  private getDot(noteXML: NoteXML): Dot | null {
     const dot = noteXML.dot
     return dot ? (isArray(dot) && dot.length >= 2 ? 'doubleDot' : 'dot') : null
   }
@@ -91,15 +87,15 @@ export default class Note implements NoteInterface {
     }
   }
 
-  private getSlur(noteXML: NoteXML): SlurValue {
+  private getSlur(noteXML: NoteXML): Slur {
     return noteXML.notations?.slur?._type ?? null
   }
 
-  private getStem(noteXML: NoteXML): StemValue {
+  private getStem(noteXML: NoteXML): Stem {
     return noteXML.stem ?? null
   }
 
-  private getTied(noteXML: NoteXML): TiedValue[] | null {
+  private getTied(noteXML: NoteXML): Tied[] | null {
     const tied = noteXML.notations?.tied
     if (!tied) return null
 
@@ -114,7 +110,7 @@ export default class Note implements NoteInterface {
     return actualNotes && normalNotes ? { actualNotes, normalNotes } : null
   }
 
-  private getTuplet(noteXML: NoteXML): TupletValue[] | null {
+  private getTuplet(noteXML: NoteXML): Tuplet[] | null {
     const tuplet = noteXML.notations?.tuplet
     if (!tuplet) return null
 
@@ -126,6 +122,10 @@ export default class Note implements NoteInterface {
   }
 
   appendData(data: NoteData) {
+    if (!this.data) {
+      this.data = []
+    }
+
     this.data?.push(data)
   }
 

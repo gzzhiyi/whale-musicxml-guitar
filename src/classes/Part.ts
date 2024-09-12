@@ -20,6 +20,7 @@ export default class Part {
   constructor({ measures, speed }: PropsType) {
     measures.forEach((measure, index) => {
       const metronome = this.getMetronome(measure)
+
       if (metronome) this.setGlobalMetronome(metronome)
 
       const timeSignature = this.getTimeSignature(measure)

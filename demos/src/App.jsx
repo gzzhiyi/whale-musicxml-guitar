@@ -26,24 +26,24 @@ export default function App() {
   }
 
   useEffect(async() => {
-    const xmlStr = await getXMLData('/xml/test/chord.xml')
+    const xmlStr = await getXMLData('/xml/song4_100speed.xml')
     const parser = new Parser({
       xmlStr,
       debug: true
     })
 
-    const data = [
-      { string: 3, fret: 2 },
-      { string: 4, fret: 0 },
-      { string: 2, fret: 3 },
-      { string: 1, fret: 2 }
-    ]
+    // const data = [
+    //   { string: 3, fret: 2 },
+    //   { string: 4, fret: 0 },
+    //   { string: 2, fret: 3 },
+    //   { string: 1, fret: 2 }
+    // ]
+    // console.log(getChordName(data))
 
-    console.log(getChordName(data))
-    console.log(parser.getMeasureById('M_2'))
-    console.log(parser.getNoteById('N_2_2'))
-    console.log(noteTypeToNumber('16th'))
-    console.log(numberToNoteType(32))
+    // console.log(parser.getMeasureById('M_2'))
+    // console.log(parser.getNoteById('N_2_2'))
+    // console.log(noteTypeToNumber('16th'))
+    // console.log(numberToNoteType(32))
   }, [])
 
   return (

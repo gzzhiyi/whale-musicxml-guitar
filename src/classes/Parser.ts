@@ -9,10 +9,10 @@ import parseXML from '@/core/parseXML'
 import PartClass from '@/classes/Part'
 import {
   MusicXML,
+  PartXML,
   MeasureXML,
   Measure,
-  Note,
-  PartXML
+  Note
 } from '@/types'
 
 type PropsType = {

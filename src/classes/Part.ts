@@ -20,11 +20,10 @@ export default class Part {
   constructor({ measures, speed }: PropsType) {
     measures.forEach((measure, index) => {
       const metronome = this.getMetronome(measure)
-
-      if (metronome) this.setGlobalMetronome(metronome)
+      metronome && this.setGlobalMetronome(metronome)
 
       const timeSignature = this.getTimeSignature(measure)
-      if (timeSignature) this.setGlobalTimeSignature(timeSignature)
+      timeSignature && this.setGlobalTimeSignature(timeSignature)
 
       const measureClass = new MeasureClass({
         id: `M_${index + 1}`,
@@ -53,7 +52,7 @@ export default class Part {
         return {
           beatUnit: noteTypeToNumber(metronomeXML['beat-unit']),
           bpm: metronomeXML['per-minute']
-        };
+        }
       }
     }
 

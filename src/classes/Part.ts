@@ -1,4 +1,4 @@
-import { isEmpty } from 'lodash'
+import { isArray, isEmpty } from 'lodash'
 import { noteTypeToNumber } from '@/utils'
 import MeasureClass from '@/classes/Measure'
 import { MeasureXML, Metronome, TimeSignature } from '@/types'
@@ -44,12 +44,20 @@ export default class Part {
   }
 
   private getMetronome(measureXML: MeasureXML): Metronome | null {
-    const metronomeXML = measureXML?.direction?.['direction-type']?.metronome
+    const directions = isArray(measureXML?.direction) ? measureXML.direction : [measureXML?.direction]
 
-    return isEmpty(metronomeXML) ? null : {
-      beatUnit: noteTypeToNumber(metronomeXML['beat-unit']) || 4,
-      bpm: metronomeXML['per-minute'] || 60
+    for (const item of directions) {
+      const metronomeXML = item?.['direction-type']?.metronome
+
+      if (metronomeXML) {
+        return {
+          beatUnit: noteTypeToNumber(metronomeXML['beat-unit']),
+          bpm: metronomeXML['per-minute']
+        };
+      }
     }
+
+    return null
   }
 
   private getTimeSignature(measureXML: MeasureXML): TimeSignature | null {

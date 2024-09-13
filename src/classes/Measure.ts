@@ -90,14 +90,19 @@ export default class Measure {
   }
 
   private getNotes(measureXML: MeasureXML): Note[] {
-    if (isEmpty(measureXML?.note)) {
-      return []
-    }
-
-    const notesXML = isArray(measureXML.note) ? measureXML.note : [measureXML.note]
     const notesList: NoteClass[] = []
     let count = 1
 
+    if (isEmpty(measureXML?.note)) { // 如果小节音符为空，自动补全音符
+      const noteClass = new NoteClass({
+        id: `N_${this.number}_${count}`
+      })
+
+      this.addNoteToList(noteClass, notesList)
+      return notesList
+    }
+
+    const notesXML = isArray(measureXML.note) ? measureXML.note : [measureXML.note]
     notesXML.forEach((noteXML) => {
       if (this.isChord(noteXML)) {
         const lastNote = notesList[notesList.length - 1]

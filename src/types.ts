@@ -100,6 +100,7 @@ export type Note = {
   data: NoteData[] | null
   dot: Dot | null
   id: string
+  name: string
   notations: Notations
   stem: Stem | null
   time: Time | null

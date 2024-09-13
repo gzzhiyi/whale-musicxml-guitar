@@ -1,4 +1,5 @@
 import { has, isArray } from 'lodash'
+import getChordName from '@/utils/getChordName'
 import {
   Beam,
   Dot,
@@ -18,7 +19,7 @@ import {
 
 type PropsType = {
   id: string
-  xmlData: NoteXML
+  xmlData?: NoteXML
 }
 
 interface NoteInterface extends NoteT {
@@ -27,26 +28,33 @@ interface NoteInterface extends NoteT {
 }
 
 export default class Note implements NoteInterface {
-  public beam: Beam[] | null
+  public beam: Beam[] | null = null
   public data: NoteData[] | null = null
   public dot: Dot | null = null
   public id: string
-  public notations: Notations
+  public name: string = ''
+  public notations: Notations = { slur: null, tied: null, tuplet: null }
   public stem: Stem | null = null
   public time: Time | null = null
-  public timeModification: TimeModification | null
+  public timeModification: TimeModification | null = null
   public type: NoteType
   public view: NoteView
 
   constructor ({ id, xmlData }: PropsType) {
-    this.beam = this.getBeam(xmlData)
-    this.dot = this.getDot(xmlData)
     this.id = id
-    this.notations = this.getNotations(xmlData)
-    this.stem = this.getStem(xmlData)
-    this.timeModification = this.getTimeModification(xmlData)
-    this.type = this.getType(xmlData)
-    this.view = this.getView(xmlData)
+
+    if (xmlData) {
+      this.beam = this.getBeam(xmlData)
+      this.dot = this.getDot(xmlData)
+      this.notations = this.getNotations(xmlData)
+      this.stem = this.getStem(xmlData)
+      this.timeModification = this.getTimeModification(xmlData)
+      this.type = this.getType(xmlData)
+      this.view = this.getView(xmlData)
+    } else {
+      this.view = 'rest'
+      this.type = 'whole'
+    }
   }
 
   private getBeam(noteXML: NoteXML): Beam[] | null {
@@ -71,8 +79,17 @@ export default class Note implements NoteInterface {
   }
 
   private getDot(noteXML: NoteXML): Dot | null {
-    const dot = noteXML.dot
-    return dot ? (isArray(dot) && dot.length >= 2 ? 'doubleDot' : 'dot') : null
+    if (!has(noteXML, 'dot')) {
+      return null
+    }
+
+    const { dot } = noteXML
+
+    if (isArray(dot)) {
+      return dot.length >= 2 ? 'doubleDot' : 'dot'
+    }
+
+    return 'dot'
   }
 
   private getView(noteXML: NoteXML): NoteView {
@@ -127,6 +144,7 @@ export default class Note implements NoteInterface {
     }
 
     this.data?.push(data)
+    this.name = getChordName(this.data)
   }
 
   appendTime(start: number, duration: number) {

@@ -86,7 +86,7 @@ export interface Time {
 
 export type Notations = {
   slur: Slur | null
-  tied: Tied[] | null
+  tied: Tied | null
   tuplet: Tuplet | null
 }
 

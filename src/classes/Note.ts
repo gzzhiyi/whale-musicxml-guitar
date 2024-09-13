@@ -112,11 +112,11 @@ export default class Note implements NoteInterface {
     return noteXML.stem ?? null
   }
 
-  private getTied(noteXML: NoteXML): Tied[] | null {
+  private getTied(noteXML: NoteXML): Tied | null {
     const tied = noteXML.notations?.tied
     if (!tied) return null
 
-    return isArray(tied) ? tied.map(item => item._type) : [tied._type]
+    return isArray(tied) ? tied[0]._type : tied._type
   }
 
   private getTimeModification(noteXML: NoteXML): TimeModification | null {

@@ -162,9 +162,9 @@ export default class Measure {
     let duration = view === 'rest' && type === 'whole' ? beatTime * beats : (beatType / noteTypeToNumber(type)) * beatTime
 
     if (!isEmpty(timeModification)) {
-      const { slur } = notations
+      const { tuplet } = notations
       const { actualNotes, normalNotes } = timeModification
-      const radix = slur === 'end' ? (Math.floor(100 / actualNotes) + (100 % actualNotes)) / 100 : Math.floor(100 / actualNotes) / 100
+      const radix = tuplet === 'stop' ? (Math.floor(100 / actualNotes) + (100 % actualNotes)) / 100 : Math.floor(100 / actualNotes) / 100
 
       duration = Math.floor(duration * normalNotes * radix)
     }

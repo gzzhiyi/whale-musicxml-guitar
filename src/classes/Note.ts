@@ -127,11 +127,11 @@ export default class Note implements NoteInterface {
     return actualNotes && normalNotes ? { actualNotes, normalNotes } : null
   }
 
-  private getTuplet(noteXML: NoteXML): Tuplet[] | null {
+  private getTuplet(noteXML: NoteXML): Tuplet | null {
     const tuplet = noteXML.notations?.tuplet
     if (!tuplet) return null
 
-    return isArray(tuplet) ? tuplet.map(item => item._type) : [tuplet._type]
+    return isArray(tuplet) ? tuplet[0]._type : tuplet._type
   }
 
   private getType(noteXML: NoteXML): NoteType {

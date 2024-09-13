@@ -20,7 +20,7 @@ export type Technical = {
 
 export type Tied = 'start' | 'continue' | 'stop'
 
-export type Tuplet = 'start' | 'continue' | 'stop'
+export type Tuplet = 'start' | 'stop'
 
 /**
  * XML
@@ -87,7 +87,7 @@ export interface Time {
 export type Notations = {
   slur: Slur | null
   tied: Tied[] | null
-  tuplet: Tuplet[] | null
+  tuplet: Tuplet | null
 }
 
 export type TimeModification = {
